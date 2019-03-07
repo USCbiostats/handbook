@@ -1,0 +1,27 @@
+# Coding Standards
+
+This chapter will outline standards we aim to adhere to. In addition to these standards will be some suggestions on best practices we hopes you will find useful. 
+
+## General overview
+
+> Try to keep your code to less then 80 characters per line. 
+
+This will improve visibility as the code willm fit on your screen when you are working. If you are using Rstudio, you can add a visual marker on the 80 character line. Click Rstudio -> Preferences -> Code -> display -> Show margin.
+
+> document your code.
+
+Explain yourself. Each function should have acommpanying documentation explaning what it is doing. This will help other people understand what your code is doing without having to look at the code indside the function. Notice that "other people" also describes "future you".
+
+> Use white space for indenting, 2 characters.
+
+>  When possible, structure your code as sections/files, with files holding similar functions and sections to give internal structure to your file.
+
+> Include a informative README in each project.
+
+## Helpful suggestions
+
+Use a integrated development environment (IDE). We recommend https://www.rstudio.com/. **TODO** explain what the benefits of using a IDE.
+
+If you are looking for a coding style, then the [The tidyverse style guide](https://style.tidyverse.org/) is a good place to start.
+
+
