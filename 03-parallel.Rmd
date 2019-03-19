@@ -1,1 +1,68 @@
 # Parallel computing
+
+## What is parallel computing, anyway? 
+
+Serial (sequential) computing consists on doing one thing at a time. For example, suppose that you have a function that can be applied in a vectorized fashion, let's call it `f()` and a vector with four elements which we will call `x`. Using sequential computing, the function will be applied one element at a time, making use of a single core as shown in the figure below:
+
+![Here we are using a single core. The function is applied one element at a time, leaving the other 3 cores without usage.](figure/pll-computing-explained-serial.png){width="600px"}
+
+Now, in a parallel computing setting, the same function can be applied simulatenously to multiple elements of `x`, as in the following figure, where the number of cores matches the number of elements/tasks that need to be processed:
+
+![In this more intelligent way of computation, we are taking full advantage of our computer by using all 4 cores at the same time. This will translate in a reduced computation time which, in the case of complicated/long calculations, can be an important speed gain.](figure/pll-computing-explained-parallel.png){width="600px"}
+
+Parallel computing is specially important when it comes to perform a computationally intensive task such as:
+
+*   Simulations
+
+*   MCMC
+
+*   Cross-validation
+
+*   Processing big chunks of data
+
+Among others.
+
+## High-Performance Computing: An overview
+
+Loosely, from R's perspective, we can think of HPC in terms of two, maybe three things:
+
+1.  Big data: How to work with data that doesn't fit your computer
+
+2.  Parallel computing: How to take advantage of multiple core systems
+
+3.  Compiled code: Write your own low-level code (if R doesn't has it yet...)
+
+
+## Big Data
+
+*   Buy a bigger computer/RAM memory (not the best solution!)
+    
+*   Use out-of-memory storage, i.e., don't load all your data in the RAM. e.g.
+    The [bigmemory](https://CRAN.R-project.org/package=bigmemory),
+    [data.table](https://CRAN.R-project.org/package=data.table),
+    [HadoopStreaming](https://CRAN.R-project.org/package=HadoopStreaming) R packages
+
+*   Store it more efficiently, e.g.: Sparse Matrices (take a look at the `dgCMatrix` objects
+    from the [Matrix](https://CRAN.R-project.org/package=Matrix) R package)
+    
+![Flynn's Classical Taxonomy. Source: Introduction to Parallel Computing, Blaise Barney, Lawrence Livermore National Laboratory [(website)](https://computing.llnl.gov/tutorials/parallel_comp/#Whatis)](figure/flynnsTaxonomy.png)
+
+## CPU/Core/Threads
+
+One important thing to know is how many resources we have, and resources can be very different accross systems. In general, we can talk about a computer's processing unit, CPU, as a collection of cores which are grouped/arranged in sockets. More over, modern CPUs such as those built by intel have what they call multithreaded technology, which in raw terms means a single physical core behaving as multiple ones. The following figure shows a nice illustration of this:
+
+
+![Taxonomy of CPUs (Downloaded from de https://slurm.schedmd.com/mc_support.html)](figure/cpu-slurm.png)
+
+Now, how many cores does your computer has, the parallel package can tell you that:
+
+```{r 03-how-many-cores}
+parallel::detectCores()
+```
+
+
+
+## When is it a good idea?
+
+![Ask yourself these questions before jumping into HPC!](figure/when_to_parallel.png)
+
