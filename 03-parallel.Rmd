@@ -1,8 +1,34 @@
 # Parallel computing
 
+## Introduction
+
+In this chapter we will introduce the reader to parallel computing using R. In particular, we will take a general overview on what is parallel computing, how can it benefit us, and how can it be used in R.
+
+The rest of this chapter develops under the assumption that the reader has some level of knowledge about R fundamentals (types of objects, functions, etc.).
+
+
 ## What is parallel computing, anyway? 
 
-Serial (sequential) computing consists on doing one thing at a time. For example, suppose that you have a function that can be applied in a vectorized fashion, let's call it `f()` and a vector with four elements which we will call `x`. Using sequential computing, the function will be applied one element at a time, making use of a single core as shown in the figure below:
+In very simple terms, parallel computing is all about making things running faster. More concrete, while there are plenty ways of accelerating calculations, parallel computing is all about doing multiple things simulateneously.
+
+Sequential computing, on the other hand, is what we usually see in R. When we make a call to a function, most of the time R is doing calculations using a single processor. While this may not be a problem if your call takes just a couple of seconds, it may be critical if, for example, the program needs to make a significant number of such calls, say 1,000, in order to be completed.
+
+While not a general rule, most of the time computationally intensive programs can be splitted in such a way that its components can be executed in a isolated way, this is, without rellying in the other parts to be completed.
+
+For example, suppose that you have a function that takes a number and multiplies it by 2, let's call it `f`:
+
+```{r 03-parallel-times2}
+f <- function(n) n*2
+```
+
+In R, this simple function can be applied seemesly to a vector, for example:
+
+```{r 03-parallel-times2-applied}
+x <- 1:4
+f(x)
+```
+
+If we were able to see how calculations are taking place in R, we could represent this in the following way:
 
 ![Here we are using a single core. The function is applied one element at a time, leaving the other 3 cores without usage.](figure/pll-computing-explained-serial.png){width="600px"}
 
@@ -10,44 +36,65 @@ Now, in a parallel computing setting, the same function can be applied simulaten
 
 ![In this more intelligent way of computation, we are taking full advantage of our computer by using all 4 cores at the same time. This will translate in a reduced computation time which, in the case of complicated/long calculations, can be an important speed gain.](figure/pll-computing-explained-parallel.png){width="600px"}
 
-Parallel computing is specially important when it comes to perform a computationally intensive task such as:
-
-*   Simulations
-
-*   MCMC
-
-*   Cross-validation
-
-*   Processing big chunks of data
-
-Among others.
-
-## High-Performance Computing: An overview
-
-Loosely, from R's perspective, we can think of HPC in terms of two, maybe three things:
-
-1.  Big data: How to work with data that doesn't fit your computer
-
-2.  Parallel computing: How to take advantage of multiple core systems
-
-3.  Compiled code: Write your own low-level code (if R doesn't has it yet...)
+In principle, this implementation of the function `f` should take 1/4 of what the original version takes to be applied to `x`. As the number of function calls increases, or in other words, as the complexity in terms of computational time increases, it makes sense to start thinking about parallel computing. This takes us to the next section.
 
 
-## Big Data
+## When is it a good idea?
 
-*   Buy a bigger computer/RAM memory (not the best solution!)
-    
-*   Use out-of-memory storage, i.e., don't load all your data in the RAM. e.g.
-    The [bigmemory](https://CRAN.R-project.org/package=bigmemory),
-    [data.table](https://CRAN.R-project.org/package=data.table),
-    [HadoopStreaming](https://CRAN.R-project.org/package=HadoopStreaming) R packages
+Parallel computing sounds great, but is it always a good idea to try to **parallelize** your program? The answer is no.
 
-*   Store it more efficiently, e.g.: Sparse Matrices (take a look at the `dgCMatrix` objects
-    from the [Matrix](https://CRAN.R-project.org/package=Matrix) R package)
-    
+A lot of times we feel pushed towards writing the code as efficient as possible. Moreover, this is a known problem among software developers, see for example this hilarious reply on [Stackoverflow](https://www.stackoverflow.com) regarding "bets comment in source code"[^total_hours_wasted]:
+
+[^total_hours_wasted]: Read the original post (now closed) [here](https://stackoverflow.com/questions/184618/what-is-the-best-comment-in-source-code-you-have-ever-encountered). 
+
+```
+// 
+// Dear maintainer:
+// 
+// Once you are done trying to 'optimize' this routine,
+// and have realized what a terrible mistake that was,
+// please increment the following counter as a warning
+// to the next guy:
+// 
+// total_hours_wasted_here = 42
+// 
+```
+
+While optimizing a program may be important in some cases, time constraints and redability may be more important in relative terms. As a rule of thumb, you will only want to optimize your code if by doing so the potential speed gains are worthwhile, for example, reducing computation speed to half of the original time in a algorithm that takes more than just a few seconds. Other examples include:
+
+Good idea when:
+
+*   You are writing a log-likelihood Function that you need to maximize. Solvers take, for example, at least 5 calls to the objective function so it makes sense to speed up the call.
+
+*   Even more relevant than a simple optimization, if the function needs to be called thousands of times like in a MCMC algorithm, then it definetly makes sense to improve speed.
+
+*   You are processing chunks of data in which each requires a significant amount of time to be processed.
+
+Bad idea when:
+
+*   The section of the program that you want to speed up already takes a relatively small time to be completed, for example, a few seconds or a fraction of a second.
+
+*   The section of the program you are trying to optimize is not the the actual bottle neck of the program[^bottleneck]
+
+[^bottleneck]: For more about how to identify code bottlenecks, take a look at the Profilinf section of this book [here](#profile-benchmark).
+
+If your computational problem is reasonable enought to think about code optimization, and furthermore, implementing parallel computing, then the following diagram should be a useful guide to follow:
+
+![Ask yourself these questions before jumping into HPC!](figure/when_to_parallel.png)
+
+If your problem reached the part in which it can be parallelized but there are no tools around for you to use, keep reading, otherwise move to the next chapter and don't come back until you have a problem worthy enough to be dealt with parallel computing... just kidding.
+
+## Fundamentals
+
+Before jumping into HPC with R, let's take a look at some concepts that are fundamental for the rest of the chapter.
+
+### Types of parallelisms
+
+A nice way to look at types of computation is through Flynn's taxonomy:
+
 ![Flynn's Classical Taxonomy. Source: Introduction to Parallel Computing, Blaise Barney, Lawrence Livermore National Laboratory [(website)](https://computing.llnl.gov/tutorials/parallel_comp/#Whatis)](figure/flynnsTaxonomy.png)
 
-## CPU/Core/Threads
+### What you need to know about Hardware
 
 One important thing to know is how many resources we have, and resources can be very different accross systems. In general, we can talk about a computer's processing unit, CPU, as a collection of cores which are grouped/arranged in sockets. More over, modern CPUs such as those built by intel have what they call multithreaded technology, which in raw terms means a single physical core behaving as multiple ones. The following figure shows a nice illustration of this:
 
@@ -60,9 +107,28 @@ Now, how many cores does your computer has, the parallel package can tell you th
 parallel::detectCores()
 ```
 
+### HPC in R
+
+Loosely, from R's perspective, we can think of HPC in terms of two, maybe three things:
+
+1.  Big data: How to work with data that doesn't fit your computer
+
+2.  Parallel computing: How to take advantage of multiple core systems
+
+3.  Compiled code: Write your own low-level code (if R doesn't has it yet...)
+
+Big Data
+
+*   Buy a bigger computer/RAM memory (not the best solution!)
+    
+*   Use out-of-memory storage, i.e., don't load all your data in the RAM. e.g.
+    The [bigmemory](https://CRAN.R-project.org/package=bigmemory),
+    [data.table](https://CRAN.R-project.org/package=data.table),
+    [HadoopStreaming](https://CRAN.R-project.org/package=HadoopStreaming) R packages
+
+*   Store it more efficiently, e.g.: Sparse Matrices (take a look at the `dgCMatrix` objects
+    from the [Matrix](https://CRAN.R-project.org/package=Matrix) R package)
+    
 
 
-## When is it a good idea?
-
-![Ask yourself these questions before jumping into HPC!](figure/when_to_parallel.png)
 

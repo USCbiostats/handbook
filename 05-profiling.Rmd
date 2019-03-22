@@ -1,1 +1,1 @@
-# Profiling and benchmarking
+# Profiling and benchmarking {#profile-benchmark}

@@ -25,7 +25,7 @@
 <meta name="author" content="Emil Hvitfeldt">
 
 
-<meta name="date" content="2019-03-19">
+<meta name="date" content="2019-03-22">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -137,14 +137,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="building-a-r-package.html"><a href="building-a-r-package.html"><i class="fa fa-check"></i><b>3</b> Building a R package</a></li>
 <li class="chapter" data-level="4" data-path="parallel-computing.html"><a href="parallel-computing.html"><i class="fa fa-check"></i><b>4</b> Parallel computing</a><ul>
-<li class="chapter" data-level="4.1" data-path="parallel-computing.html"><a href="parallel-computing.html#what-is-parallel-computing-anyway"><i class="fa fa-check"></i><b>4.1</b> What is parallel computing, anyway?</a></li>
-<li class="chapter" data-level="4.2" data-path="parallel-computing.html"><a href="parallel-computing.html#high-performance-computing-an-overview"><i class="fa fa-check"></i><b>4.2</b> High-Performance Computing: An overview</a></li>
-<li class="chapter" data-level="4.3" data-path="parallel-computing.html"><a href="parallel-computing.html#big-data"><i class="fa fa-check"></i><b>4.3</b> Big Data</a></li>
-<li class="chapter" data-level="4.4" data-path="parallel-computing.html"><a href="parallel-computing.html#cpucorethreads"><i class="fa fa-check"></i><b>4.4</b> CPU/Core/Threads</a></li>
-<li class="chapter" data-level="4.5" data-path="parallel-computing.html"><a href="parallel-computing.html#when-is-it-a-good-idea"><i class="fa fa-check"></i><b>4.5</b> When is it a good idea?</a></li>
+<li class="chapter" data-level="4.1" data-path="parallel-computing.html"><a href="parallel-computing.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="parallel-computing.html"><a href="parallel-computing.html#what-is-parallel-computing-anyway"><i class="fa fa-check"></i><b>4.2</b> What is parallel computing, anyway?</a></li>
+<li class="chapter" data-level="4.3" data-path="parallel-computing.html"><a href="parallel-computing.html#when-is-it-a-good-idea"><i class="fa fa-check"></i><b>4.3</b> When is it a good idea?</a></li>
+<li class="chapter" data-level="4.4" data-path="parallel-computing.html"><a href="parallel-computing.html#fundamentals"><i class="fa fa-check"></i><b>4.4</b> Fundamentals</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="parallel-computing.html"><a href="parallel-computing.html#types-of-parallelisms"><i class="fa fa-check"></i><b>4.4.1</b> Types of parallelisms</a></li>
+<li class="chapter" data-level="4.4.2" data-path="parallel-computing.html"><a href="parallel-computing.html#what-you-need-to-know-about-hardware"><i class="fa fa-check"></i><b>4.4.2</b> What you need to know about Hardware</a></li>
+<li class="chapter" data-level="4.4.3" data-path="parallel-computing.html"><a href="parallel-computing.html#hpc-in-r"><i class="fa fa-check"></i><b>4.4.3</b> HPC in R</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="testing.html"><a href="testing.html"><i class="fa fa-check"></i><b>5</b> Testing</a></li>
-<li class="chapter" data-level="6" data-path="profiling-and-benchmarking.html"><a href="profiling-and-benchmarking.html"><i class="fa fa-check"></i><b>6</b> Profiling and benchmarking</a></li>
+<li class="chapter" data-level="6" data-path="profile-benchmark.html"><a href="profile-benchmark.html"><i class="fa fa-check"></i><b>6</b> Profiling and benchmarking</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -167,9 +170,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="parallel-computing" class="section level1">
 <h1><span class="header-section-number">4</span> Parallel computing</h1>
+<div id="introduction" class="section level2">
+<h2><span class="header-section-number">4.1</span> Introduction</h2>
+<p>In this chapter we will introduce the reader to parallel computing using R. In particular, we will take a general overview on what is parallel computing, how can it benefit us, and how can it be used in R.</p>
+<p>The rest of this chapter develops under the assumption that the reader has some level of knowledge about R fundamentals (types of objects, functions, etc.).</p>
+</div>
 <div id="what-is-parallel-computing-anyway" class="section level2">
-<h2><span class="header-section-number">4.1</span> What is parallel computing, anyway?</h2>
-<p>Serial (sequential) computing consists on doing one thing at a time. For example, suppose that you have a function that can be applied in a vectorized fashion, let’s call it <code>f()</code> and a vector with four elements which we will call <code>x</code>. Using sequential computing, the function will be applied one element at a time, making use of a single core as shown in the figure below:</p>
+<h2><span class="header-section-number">4.2</span> What is parallel computing, anyway?</h2>
+<p>In very simple terms, parallel computing is all about making things running faster. More concrete, while there are plenty ways of accelerating calculations, parallel computing is all about doing multiple things simulateneously.</p>
+<p>Sequential computing, on the other hand, is what we usually see in R. When we make a call to a function, most of the time R is doing calculations using a single processor. While this may not be a problem if your call takes just a couple of seconds, it may be critical if, for example, the program needs to make a significant number of such calls, say 1,000, in order to be completed.</p>
+<p>While not a general rule, most of the time computationally intensive programs can be splitted in such a way that its components can be executed in a isolated way, this is, without rellying in the other parts to be completed.</p>
+<p>For example, suppose that you have a function that takes a number and multiplies it by 2, let’s call it <code>f</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="cf">function</span>(n) n<span class="op">*</span><span class="dv">2</span></code></pre>
+<p>In R, this simple function can be applied seemesly to a vector, for example:</p>
+<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>
+<span class="kw">f</span>(x)</code></pre>
+<pre><code>## [1] 2 4 6 8</code></pre>
+<p>If we were able to see how calculations are taking place in R, we could represent this in the following way:</p>
 <div class="figure">
 <img src="figure/pll-computing-explained-serial.png" alt="Here we are using a single core. The function is applied one element at a time, leaving the other 3 cores without usage." width="600" />
 <p class="caption">Here we are using a single core. The function is applied one element at a time, leaving the other 3 cores without usage.</p>
@@ -179,42 +196,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <img src="figure/pll-computing-explained-parallel.png" alt="In this more intelligent way of computation, we are taking full advantage of our computer by using all 4 cores at the same time. This will translate in a reduced computation time which, in the case of complicated/long calculations, can be an important speed gain." width="600" />
 <p class="caption">In this more intelligent way of computation, we are taking full advantage of our computer by using all 4 cores at the same time. This will translate in a reduced computation time which, in the case of complicated/long calculations, can be an important speed gain.</p>
 </div>
-<p>Parallel computing is specially important when it comes to perform a computationally intensive task such as:</p>
-<ul>
-<li><p>Simulations</p></li>
-<li><p>MCMC</p></li>
-<li><p>Cross-validation</p></li>
-<li><p>Processing big chunks of data</p></li>
-</ul>
-<p>Among others.</p>
+<p>In principle, this implementation of the function <code>f</code> should take 1/4 of what the original version takes to be applied to <code>x</code>. As the number of function calls increases, or in other words, as the complexity in terms of computational time increases, it makes sense to start thinking about parallel computing. This takes us to the next section.</p>
 </div>
-<div id="high-performance-computing-an-overview" class="section level2">
-<h2><span class="header-section-number">4.2</span> High-Performance Computing: An overview</h2>
-<p>Loosely, from R’s perspective, we can think of HPC in terms of two, maybe three things:</p>
-<ol style="list-style-type: decimal">
-<li><p>Big data: How to work with data that doesn’t fit your computer</p></li>
-<li><p>Parallel computing: How to take advantage of multiple core systems</p></li>
-<li><p>Compiled code: Write your own low-level code (if R doesn’t has it yet…)</p></li>
-</ol>
-</div>
-<div id="big-data" class="section level2">
-<h2><span class="header-section-number">4.3</span> Big Data</h2>
+<div id="when-is-it-a-good-idea" class="section level2">
+<h2><span class="header-section-number">4.3</span> When is it a good idea?</h2>
+<p>Parallel computing sounds great, but is it always a good idea to try to <strong>parallelize</strong> your program? The answer is no.</p>
+<p>A lot of times we feel pushed towards writing the code as efficient as possible. Moreover, this is a known problem among software developers, see for example this hilarious reply on <a href="https://www.stackoverflow.com">Stackoverflow</a> regarding “bets comment in source code”<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>:</p>
+<pre><code>// 
+// Dear maintainer:
+// 
+// Once you are done trying to &#39;optimize&#39; this routine,
+// and have realized what a terrible mistake that was,
+// please increment the following counter as a warning
+// to the next guy:
+// 
+// total_hours_wasted_here = 42
+// </code></pre>
+<p>While optimizing a program may be important in some cases, time constraints and redability may be more important in relative terms. As a rule of thumb, you will only want to optimize your code if by doing so the potential speed gains are worthwhile, for example, reducing computation speed to half of the original time in a algorithm that takes more than just a few seconds. Other examples include:</p>
+<p>Good idea when:</p>
 <ul>
-<li><p>Buy a bigger computer/RAM memory (not the best solution!)</p></li>
-<li><p>Use out-of-memory storage, i.e., don’t load all your data in the RAM.
-e.g. The <a href="https://CRAN.R-project.org/package=bigmemory">bigmemory</a>,
-<a href="https://CRAN.R-project.org/package=data.table">data.table</a>,
-<a href="https://CRAN.R-project.org/package=HadoopStreaming">HadoopStreaming</a> R packages</p></li>
-<li><p>Store it more efficiently, e.g.: Sparse Matrices (take a look at the <code>dgCMatrix</code> objects
-from the <a href="https://CRAN.R-project.org/package=Matrix">Matrix</a> R package)</p></li>
+<li><p>You are writing a log-likelihood Function that you need to maximize. Solvers take, for example, at least 5 calls to the objective function so it makes sense to speed up the call.</p></li>
+<li><p>Even more relevant than a simple optimization, if the function needs to be called thousands of times like in a MCMC algorithm, then it definetly makes sense to improve speed.</p></li>
+<li><p>You are processing chunks of data in which each requires a significant amount of time to be processed.</p></li>
 </ul>
+<p>Bad idea when:</p>
+<ul>
+<li><p>The section of the program that you want to speed up already takes a relatively small time to be completed, for example, a few seconds or a fraction of a second.</p></li>
+<li><p>The section of the program you are trying to optimize is not the the actual bottle neck of the program<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p></li>
+</ul>
+<p>If your computational problem is reasonable enought to think about code optimization, and furthermore, implementing parallel computing, then the following diagram should be a useful guide to follow:</p>
+<div class="figure">
+<img src="figure/when_to_parallel.png" alt="Ask yourself these questions before jumping into HPC!" />
+<p class="caption">Ask yourself these questions before jumping into HPC!</p>
+</div>
+<p>If your problem reached the part in which it can be parallelized but there are no tools around for you to use, keep reading, otherwise move to the next chapter and don’t come back until you have a problem worthy enough to be dealt with parallel computing… just kidding.</p>
+</div>
+<div id="fundamentals" class="section level2">
+<h2><span class="header-section-number">4.4</span> Fundamentals</h2>
+<p>Before jumping into HPC with R, let’s take a look at some concepts that are fundamental for the rest of the chapter.</p>
+<div id="types-of-parallelisms" class="section level3">
+<h3><span class="header-section-number">4.4.1</span> Types of parallelisms</h3>
+<p>A nice way to look at types of computation is through Flynn’s taxonomy:</p>
 <div class="figure">
 <img src="figure/flynnsTaxonomy.png" alt="Flynn’s Classical Taxonomy. Source: Introduction to Parallel Computing, Blaise Barney, Lawrence Livermore National Laboratory (website)" />
 <p class="caption">Flynn’s Classical Taxonomy. Source: Introduction to Parallel Computing, Blaise Barney, Lawrence Livermore National Laboratory <a href="https://computing.llnl.gov/tutorials/parallel_comp/#Whatis">(website)</a></p>
 </div>
 </div>
-<div id="cpucorethreads" class="section level2">
-<h2><span class="header-section-number">4.4</span> CPU/Core/Threads</h2>
+<div id="what-you-need-to-know-about-hardware" class="section level3">
+<h3><span class="header-section-number">4.4.2</span> What you need to know about Hardware</h3>
 <p>One important thing to know is how many resources we have, and resources can be very different accross systems. In general, we can talk about a computer’s processing unit, CPU, as a collection of cores which are grouped/arranged in sockets. More over, modern CPUs such as those built by intel have what they call multithreaded technology, which in raw terms means a single physical core behaving as multiple ones. The following figure shows a nice illustration of this:</p>
 <div class="figure">
 <img src="figure/cpu-slurm.png" alt="Taxonomy of CPUs (Downloaded from de https://slurm.schedmd.com/mc_support.html)" />
@@ -224,14 +253,34 @@ from the <a href="https://CRAN.R-project.org/package=Matrix">Matrix</a> R packag
 <pre class="sourceCode r"><code class="sourceCode r">parallel<span class="op">::</span><span class="kw">detectCores</span>()</code></pre>
 <pre><code>## [1] 4</code></pre>
 </div>
-<div id="when-is-it-a-good-idea" class="section level2">
-<h2><span class="header-section-number">4.5</span> When is it a good idea?</h2>
-<div class="figure">
-<img src="figure/when_to_parallel.png" alt="Ask yourself these questions before jumping into HPC!" />
-<p class="caption">Ask yourself these questions before jumping into HPC!</p>
-</div>
+<div id="hpc-in-r" class="section level3">
+<h3><span class="header-section-number">4.4.3</span> HPC in R</h3>
+<p>Loosely, from R’s perspective, we can think of HPC in terms of two, maybe three things:</p>
+<ol style="list-style-type: decimal">
+<li><p>Big data: How to work with data that doesn’t fit your computer</p></li>
+<li><p>Parallel computing: How to take advantage of multiple core systems</p></li>
+<li><p>Compiled code: Write your own low-level code (if R doesn’t has it yet…)</p></li>
+</ol>
+<p>Big Data</p>
+<ul>
+<li><p>Buy a bigger computer/RAM memory (not the best solution!)</p></li>
+<li><p>Use out-of-memory storage, i.e., don’t load all your data in the RAM.
+e.g. The <a href="https://CRAN.R-project.org/package=bigmemory">bigmemory</a>,
+<a href="https://CRAN.R-project.org/package=data.table">data.table</a>,
+<a href="https://CRAN.R-project.org/package=HadoopStreaming">HadoopStreaming</a> R packages</p></li>
+<li><p>Store it more efficiently, e.g.: Sparse Matrices (take a look at the <code>dgCMatrix</code> objects
+from the <a href="https://CRAN.R-project.org/package=Matrix">Matrix</a> R package)</p></li>
+</ul>
 
 </div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>Read the original post (now closed) <a href="https://stackoverflow.com/questions/184618/what-is-the-best-comment-in-source-code-you-have-ever-encountered">here</a>.<a href="parallel-computing.html#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>For more about how to identify code bottlenecks, take a look at the Profilinf section of this book <a href="profile-benchmark.html#profile-benchmark">here</a>.<a href="parallel-computing.html#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
             </section>
 
