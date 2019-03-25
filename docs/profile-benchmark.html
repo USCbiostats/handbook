@@ -149,6 +149,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.3.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#slow-code"><i class="fa fa-check"></i><b>6.3.1</b> Slow code</a></li>
 <li class="chapter" data-level="6.3.2" data-path="profile-benchmark.html"><a href="profile-benchmark.html#fast-code---microbenchmarking"><i class="fa fa-check"></i><b>6.3.2</b> Fast code - microbenchmarking</a></li>
 </ul></li>
+<li class="chapter" data-level="6.4" data-path="profile-benchmark.html"><a href="profile-benchmark.html#additional-resources"><i class="fa fa-check"></i><b>6.4</b> Additional resources</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -302,10 +303,10 @@ bench<span class="op">::</span><span class="kw">mark</span>(
   <span class="kw">cov</span>(x, x)
 )</code></pre>
 <pre><code>## # A tibble: 2 x 10
-##   expression    min   mean median   max `itr/sec` mem_alloc  n_gc n_itr
-##   &lt;chr&gt;      &lt;bch:&gt; &lt;bch:&gt; &lt;bch:&gt; &lt;bch&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;
-## 1 var(x)     23.9µs 31.4µs 29.3µs 144µs    31895.        0B     2  9998
-## 2 cov(x, x)  42.2µs 51.2µs 50.2µs 185µs    19549.        0B     4  8812
+##   expression    min   mean median     max `itr/sec` mem_alloc  n_gc n_itr
+##   &lt;chr&gt;      &lt;bch:&gt; &lt;bch:&gt; &lt;bch:&gt; &lt;bch:t&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 var(x)     23.9µs 42.4µs 41.2µs  26.6ms    23577.        0B     2  9998
+## 2 cov(x, x)  42.3µs   54µs 51.7µs 193.1µs    18509.        0B     3  8529
 ## # … with 1 more variable: total_time &lt;bch:tm&gt;</code></pre>
 <p><code>mark()</code> also checks that all the expressions return the same output as a sanity check. Notice the units</p>
 <ul>
@@ -313,8 +314,13 @@ bench<span class="op">::</span><span class="kw">mark</span>(
 <li>1 µs, then one million calls takes a second.</li>
 <li>1 ns, then one billion calls takes a second.</li>
 </ul>
-
 </div>
+</div>
+<div id="additional-resources" class="section level2">
+<h2><span class="header-section-number">6.4</span> Additional resources</h2>
+<p><a href="https://adv-r.hadley.nz/perf-measure.html" class="uri">https://adv-r.hadley.nz/perf-measure.html</a><br />
+Chapter on “Measuring performance” from Advanced R by Hadley Wickham. Covers more or less the same topics as this chapter but with more examples and greater details, great next step for reading.</p>
+
 </div>
 </div>
             </section>

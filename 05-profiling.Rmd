@@ -162,3 +162,8 @@ bench::mark(
 - 1 ms, then one thousand calls takes a second.
 - 1 µs, then one million calls takes a second.
 - 1 ns, then one billion calls takes a second.
+
+## Additional resources
+
+https://adv-r.hadley.nz/perf-measure.html  
+Chapter on "Measuring performance" from Advanced R by Hadley Wickham. Covers more or less the same topics as this chapter but with more examples and greater details, great next step for reading.
