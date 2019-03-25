@@ -4,11 +4,11 @@
 
 This chapter will introduce the the concepts of profiling and benchmarking. These concepts are universal withing programming and this chapter will focus on its practical implementation and usage in the R programming language.
 
-The overall goal of these techniques is to meassure the performance of the code you have written. This is not a measure of correctness, it is a measure of speed.
+The overall goal of these techniques is to measure the performance of the code you have written. This is not a measure of correctness, it is a measure of speed.
 
 ## Profiling
 
-Profiling is the act of meassuring the runtime of each line of code you have written. Knowing where the majority of time is being spend in your code (also called a "bottleneck") is benificial as it is a good indication of where you should spend your time optimizing.  
+Profiling is the act of measuring the run time of each line of code you have written. Knowing where the majority of time is being spend in your code (also called a "bottleneck") is beneficial as it is a good indication of where you should spend your time optimizing.  
 
 we will use the the [profvis](https://rstudio.github.io/profvis/) package to do profiling. It have a couple of different ways of interacting. In the first one you load the **profvis** package and then you wrap the code you want to profile in `profvis({` and `})`, show below.
 
@@ -30,18 +30,18 @@ If you are using the Rstudio IDE then you can access the profiling tool from the
 knitr::include_graphics("screenshots/profiling-benchmark/navbar.png")
 ```
 
-Clicking this tab reveals the following actions: "Profile selected line(s)" This option is great if you have a short and compact peice of code that easily can be highlighed and tested. 
+Clicking this tab reveals the following actions: "Profile selected line(s)" This option is great if you have a short and compact piece of code that easily can be highlighted and tested. 
 
 ```{r, echo = FALSE, out.width = "50%", fig.align='center', fig.cap = "Profiling actions."}
 knitr::include_graphics("screenshots/profiling-benchmark/profile-submenu.png")
 ```
 
-Being able to start and stop the profiling is another powerful tool. In addition to being able to profile code from different areas, you are also able to stop profiling before the code is done executing, which you aren't able to in the previous 2 methods. This is useful if you want to profile a snapshot of a long-running simulation as it can have very consistant behaviour since it is running the same thing millions of time.
+Being able to start and stop the profiling is another powerful tool. In addition to being able to profile code from different areas, you are also able to stop profiling before the code is done executing, which you aren't able to in the previous 2 methods. This is useful if you want to profile a snapshot of a long-running simulation as it can have very consistent behavior since it is running the same thing millions of time.
 
-No matter which of the three way you did your profile you will be presented a framegraph
+No matter which of the three way you did your profile you will be presented a frame-graph
 
 ```{r, echo = FALSE, out.width = "75%", fig.align='center', fig.cap = "profvis output showing source on top and flame graph below."}
-knitr::include_graphics("screenshots/profiling-benchmark/flamegraph.png")
+knitr::include_graphics("screenshots/profiling-benchmark/flame-graph.png")
 ```
 
 This interactive panel shows how much time is being spend on each line of code. Another useful view can be found by clicking on the "data" tab at the top. This shows how long time is being spend in each expression.
@@ -59,7 +59,7 @@ Error in parse_rprof(prof_output, expr_source) :
   No parsing data available. Maybe your function was too fast?
 ```
 
-This is because your code ran before profvis was able to detect it. This might feel like good news, but it can make it difficout to profile fast functions that are being run a lot of times. To profile a fast function you simply let it run a lot of times. This can easily be done by putting it inside a for-loop. You change this
+This is because your code ran before profvis was able to detect it. This might feel like good news, but it can make it difficult to profile fast functions that are being run a lot of times. To profile a fast function you simply let it run a lot of times. This can easily be done by putting it inside a for-loop. You change this
 
 ```{r, eval=FALSE}
 profvis({
@@ -82,3 +82,83 @@ profvis({
 ```
 
 where you increase the number until it is run enough for the profiler to catch it.
+
+## Benchmarking
+
+Measuring how long something takes is a simple skill that will become invaluable once you start to focus on making your code faster. Simply put, if you can't measure how fast something is you don't know if it is going any faster. I'll break benchmarking into 2 sections, benchmarking slow code and fast code. In this content slow is something that takes seconds, minutes, hours or more. It is a situation where you could use a conventional stopwatch. Fast is anything faster, it is used in the context where you have two pieces of code you think does the same and you want to find out which one is faster. 
+
+### Slow code
+
+First we need to create a function to benchmark, here we will use this simple recursive formula for the fibonacci sequence. This function doesn't scale well with `n` so it will be perfect for these examples.
+
+```{r, cache=TRUE}
+fibonacci <- function(n) {
+  if(n == 0) {
+    return(0)
+  }
+  if(n == 1) {
+    return(1)
+  }
+  fibonacci(n - 1) + fibonacci(n - 2)
+}
+```
+
+Using `system.time()` is classic way to measure how long something takes.
+
+```{r, cache=TRUE}
+system.time(
+  fibonacci(32)
+  )
+```
+
+The first two numbers are the are the total user and system CPU times of the current R process and any child processes on which it has waited, and the third entry is the ‘real’ elapsed time since the process was started. An alternative with the same functionality from the [bench](http://bench.r-lib.org) package is the function `system_time()`.
+
+```{r, cache=TRUE}
+library(bench)
+system_time(
+  fibonacci(32)
+  )
+```
+
+where the two values are
+
+- process - The process CPU usage of the expression evaluation.
+- real - The wall clock time of the expression evaluation.
+
+Another great tool is the [tictoc](http://collectivemedia.github.io/tictoc/) package. This function extends the timing functionality to be nested.
+
+```{r, cache=TRUE, results='hold'}
+library(tictoc)
+tic("Total")
+ tic("Data Generation")
+ X <- matrix(rnorm(5000 * 1000), 5000, 1000)
+ b <- sample(1:1000, 1000)
+ y <- runif(1) + X %*% b + rnorm(5000)
+ toc()
+ 
+ tic("Model Fitting")
+ model <- lm(y ~ X)
+ toc()
+toc()
+```
+
+This can be useful if you want to be able to time the overall script as well as parts of it. Notice how each timing is named.
+
+### Fast code - microbenchmarking
+
+Here we will look at the what happens when we want to compare two expressions to see which one is faster. We will use the **bench** package again. Suppose we would like to determine the fastest way of calculating the variance of a selection of numbers. We use the `mark()` function from the **bench** and insert 2 or more expressions we would like to test against each other. These expressions are then run a lot of times and the summary statistics of the times are given as a result. 
+
+```{r}
+x <- rnorm(1000)
+
+bench::mark(
+  var(x),
+  cov(x, x)
+)
+```
+
+`mark()` also checks that all the expressions return the same output as a sanity check. Notice the units
+
+- 1 ms, then one thousand calls takes a second.
+- 1 µs, then one million calls takes a second.
+- 1 ns, then one billion calls takes a second.

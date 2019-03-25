@@ -145,6 +145,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.2" data-path="profile-benchmark.html"><a href="profile-benchmark.html#profiling"><i class="fa fa-check"></i><b>6.2</b> Profiling</a><ul>
 <li class="chapter" data-level="6.2.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#troubleshooting"><i class="fa fa-check"></i><b>6.2.1</b> Troubleshooting</a></li>
 </ul></li>
+<li class="chapter" data-level="6.3" data-path="profile-benchmark.html"><a href="profile-benchmark.html#benchmarking"><i class="fa fa-check"></i><b>6.3</b> Benchmarking</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#slow-code"><i class="fa fa-check"></i><b>6.3.1</b> Slow code</a></li>
+<li class="chapter" data-level="6.3.2" data-path="profile-benchmark.html"><a href="profile-benchmark.html#fast-code---microbenchmarking"><i class="fa fa-check"></i><b>6.3.2</b> Fast code - microbenchmarking</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -171,11 +175,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="introduction" class="section level2">
 <h2><span class="header-section-number">6.1</span> Introduction</h2>
 <p>This chapter will introduce the the concepts of profiling and benchmarking. These concepts are universal withing programming and this chapter will focus on its practical implementation and usage in the R programming language.</p>
-<p>The overall goal of these techniques is to meassure the performance of the code you have written. This is not a measure of correctness, it is a measure of speed.</p>
+<p>The overall goal of these techniques is to measure the performance of the code you have written. This is not a measure of correctness, it is a measure of speed.</p>
 </div>
 <div id="profiling" class="section level2">
 <h2><span class="header-section-number">6.2</span> Profiling</h2>
-<p>Profiling is the act of meassuring the runtime of each line of code you have written. Knowing where the majority of time is being spend in your code (also called a “bottleneck”) is benificial as it is a good indication of where you should spend your time optimizing.</p>
+<p>Profiling is the act of measuring the run time of each line of code you have written. Knowing where the majority of time is being spend in your code (also called a “bottleneck”) is beneficial as it is a good indication of where you should spend your time optimizing.</p>
 <p>we will use the the <a href="https://rstudio.github.io/profvis/">profvis</a> package to do profiling. It have a couple of different ways of interacting. In the first one you load the <strong>profvis</strong> package and then you wrap the code you want to profile in <code>profvis({</code> and <code>})</code>, show below.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(profvis)
 
@@ -193,17 +197,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 Figure 6.1: Profile location in Rstudio IDE navigation bar.
 </p>
 </div>
-<p>Clicking this tab reveals the following actions: “Profile selected line(s)” This option is great if you have a short and compact peice of code that easily can be highlighed and tested.</p>
+<p>Clicking this tab reveals the following actions: “Profile selected line(s)” This option is great if you have a short and compact piece of code that easily can be highlighted and tested.</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-3"></span>
 <img src="screenshots/profiling-benchmark/profile-submenu.png" alt="Profiling actions." width="50%" />
 <p class="caption">
 Figure 6.2: Profiling actions.
 </p>
 </div>
-<p>Being able to start and stop the profiling is another powerful tool. In addition to being able to profile code from different areas, you are also able to stop profiling before the code is done executing, which you aren’t able to in the previous 2 methods. This is useful if you want to profile a snapshot of a long-running simulation as it can have very consistant behaviour since it is running the same thing millions of time.</p>
-<p>No matter which of the three way you did your profile you will be presented a framegraph</p>
+<p>Being able to start and stop the profiling is another powerful tool. In addition to being able to profile code from different areas, you are also able to stop profiling before the code is done executing, which you aren’t able to in the previous 2 methods. This is useful if you want to profile a snapshot of a long-running simulation as it can have very consistent behavior since it is running the same thing millions of time.</p>
+<p>No matter which of the three way you did your profile you will be presented a frame-graph</p>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-4"></span>
-<img src="screenshots/profiling-benchmark/flamegraph.png" alt="profvis output showing source on top and flame graph below." width="75%" />
+<img src="screenshots/profiling-benchmark/flame-graph.png" alt="profvis output showing source on top and flame graph below." width="75%" />
 <p class="caption">
 Figure 6.3: profvis output showing source on top and flame graph below.
 </p>
@@ -220,7 +224,7 @@ Figure 6.4: profvis data view showcases results by expresion in stead of by line
 <p>Sometimes when you are using <strong>profvis</strong> you will see the error</p>
 <pre><code>Error in parse_rprof(prof_output, expr_source) : 
   No parsing data available. Maybe your function was too fast?</code></pre>
-<p>This is because your code ran before profvis was able to detect it. This might feel like good news, but it can make it difficout to profile fast functions that are being run a lot of times. To profile a fast function you simply let it run a lot of times. This can easily be done by putting it inside a for-loop. You change this</p>
+<p>This is because your code ran before profvis was able to detect it. This might feel like good news, but it can make it difficult to profile fast functions that are being run a lot of times. To profile a fast function you simply let it run a lot of times. This can easily be done by putting it inside a for-loop. You change this</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">profvis</span>({
   data &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">7</span>, <span class="dv">2</span>)
 
@@ -235,6 +239,80 @@ Figure 6.4: profvis data view showcases results by expresion in stead of by line
   }
 })</code></pre>
 <p>where you increase the number until it is run enough for the profiler to catch it.</p>
+</div>
+</div>
+<div id="benchmarking" class="section level2">
+<h2><span class="header-section-number">6.3</span> Benchmarking</h2>
+<p>Measuring how long something takes is a simple skill that will become invaluable once you start to focus on making your code faster. Simply put, if you can’t measure how fast something is you don’t know if it is going any faster. I’ll break benchmarking into 2 sections, benchmarking slow code and fast code. In this content slow is something that takes seconds, minutes, hours or more. It is a situation where you could use a conventional stopwatch. Fast is anything faster, it is used in the context where you have two pieces of code you think does the same and you want to find out which one is faster.</p>
+<div id="slow-code" class="section level3">
+<h3><span class="header-section-number">6.3.1</span> Slow code</h3>
+<p>First we need to create a function to benchmark, here we will use this simple recursive formula for the fibonacci sequence. This function doesn’t scale well with <code>n</code> so it will be perfect for these examples.</p>
+<pre class="sourceCode r"><code class="sourceCode r">fibonacci &lt;-<span class="st"> </span><span class="cf">function</span>(n) {
+  <span class="cf">if</span>(n <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {
+    <span class="kw">return</span>(<span class="dv">0</span>)
+  }
+  <span class="cf">if</span>(n <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {
+    <span class="kw">return</span>(<span class="dv">1</span>)
+  }
+  <span class="kw">fibonacci</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">fibonacci</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)
+}</code></pre>
+<p>Using <code>system.time()</code> is classic way to measure how long something takes.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(
+  <span class="kw">fibonacci</span>(<span class="dv">32</span>)
+  )</code></pre>
+<pre><code>##    user  system elapsed 
+##   2.515   0.053   2.572</code></pre>
+<p>The first two numbers are the are the total user and system CPU times of the current R process and any child processes on which it has waited, and the third entry is the ‘real’ elapsed time since the process was started. An alternative with the same functionality from the <a href="http://bench.r-lib.org">bench</a> package is the function <code>system_time()</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(bench)
+<span class="kw">system_time</span>(
+  <span class="kw">fibonacci</span>(<span class="dv">32</span>)
+  )</code></pre>
+<pre><code>## process    real 
+##   2.46s   2.46s</code></pre>
+<p>where the two values are</p>
+<ul>
+<li>process - The process CPU usage of the expression evaluation.</li>
+<li>real - The wall clock time of the expression evaluation.</li>
+</ul>
+<p>Another great tool is the <a href="http://collectivemedia.github.io/tictoc/">tictoc</a> package. This function extends the timing functionality to be nested.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tictoc)
+<span class="kw">tic</span>(<span class="st">&quot;Total&quot;</span>)
+ <span class="kw">tic</span>(<span class="st">&quot;Data Generation&quot;</span>)
+ X &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="dv">5000</span> <span class="op">*</span><span class="st"> </span><span class="dv">1000</span>), <span class="dv">5000</span>, <span class="dv">1000</span>)
+ b &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>, <span class="dv">1000</span>)
+ y &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>b <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">5000</span>)
+ <span class="kw">toc</span>()
+ 
+ <span class="kw">tic</span>(<span class="st">&quot;Model Fitting&quot;</span>)
+ model &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>X)
+ <span class="kw">toc</span>()
+<span class="kw">toc</span>()</code></pre>
+<pre><code>## Data Generation: 0.306 sec elapsed
+## Model Fitting: 3.612 sec elapsed
+## Total: 3.921 sec elapsed</code></pre>
+<p>This can be useful if you want to be able to time the overall script as well as parts of it. Notice how each timing is named.</p>
+</div>
+<div id="fast-code---microbenchmarking" class="section level3">
+<h3><span class="header-section-number">6.3.2</span> Fast code - microbenchmarking</h3>
+<p>Here we will look at the what happens when we want to compare two expressions to see which one is faster. We will use the <strong>bench</strong> package again. Suppose we would like to determine the fastest way of calculating the variance of a selection of numbers. We use the <code>mark()</code> function from the <strong>bench</strong> and insert 2 or more expressions we would like to test against each other. These expressions are then run a lot of times and the summary statistics of the times are given as a result.</p>
+<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">1000</span>)
+
+bench<span class="op">::</span><span class="kw">mark</span>(
+  <span class="kw">var</span>(x),
+  <span class="kw">cov</span>(x, x)
+)</code></pre>
+<pre><code>## # A tibble: 2 x 10
+##   expression    min   mean median   max `itr/sec` mem_alloc  n_gc n_itr
+##   &lt;chr&gt;      &lt;bch:&gt; &lt;bch:&gt; &lt;bch:&gt; &lt;bch&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 var(x)     23.9µs 31.4µs 29.3µs 144µs    31895.        0B     2  9998
+## 2 cov(x, x)  42.2µs 51.2µs 50.2µs 185µs    19549.        0B     4  8812
+## # … with 1 more variable: total_time &lt;bch:tm&gt;</code></pre>
+<p><code>mark()</code> also checks that all the expressions return the same output as a sanity check. Notice the units</p>
+<ul>
+<li>1 ms, then one thousand calls takes a second.</li>
+<li>1 µs, then one million calls takes a second.</li>
+<li>1 ns, then one billion calls takes a second.</li>
+</ul>
 
 </div>
 </div>
