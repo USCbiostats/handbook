@@ -25,7 +25,7 @@
 <meta name="author" content="Emil Hvitfeldt">
 
 
-<meta name="date" content="2019-03-24">
+<meta name="date" content="2019-03-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -303,10 +303,10 @@ bench<span class="op">::</span><span class="kw">mark</span>(
   <span class="kw">cov</span>(x, x)
 )</code></pre>
 <pre><code>## # A tibble: 2 x 10
-##   expression    min   mean median     max `itr/sec` mem_alloc  n_gc n_itr
-##   &lt;chr&gt;      &lt;bch:&gt; &lt;bch:&gt; &lt;bch:&gt; &lt;bch:t&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;
-## 1 var(x)     23.9µs 42.4µs 41.2µs  26.6ms    23577.        0B     2  9998
-## 2 cov(x, x)  42.3µs   54µs 51.7µs 193.1µs    18509.        0B     3  8529
+##   expression    min   mean median   max `itr/sec` mem_alloc  n_gc n_itr
+##   &lt;chr&gt;      &lt;bch:&gt; &lt;bch:&gt; &lt;bch:&gt; &lt;bch&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 var(x)     23.2µs 36.7µs 30.5µs 556µs    27247.        0B     2  9998
+## 2 cov(x, x)  41.8µs 54.7µs 53.3µs 721µs    18286.        0B     4  8013
 ## # … with 1 more variable: total_time &lt;bch:tm&gt;</code></pre>
 <p><code>mark()</code> also checks that all the expressions return the same output as a sanity check. Notice the units</p>
 <ul>
