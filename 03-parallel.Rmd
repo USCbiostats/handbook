@@ -1,5 +1,7 @@
 # Parallel computing
 
+Before starting, be advice that this chapter is in continuous work-in-progress mode, which translates in potential changes in the ordering of the sections, availability of contents, etc.
+
 ## Introduction
 
 In this chapter we will introduce the reader to parallel computing using R. In particular, we will take a general overview on what is parallel computing, how can it benefit us, and how can it be used in R.
@@ -117,7 +119,7 @@ Loosely, from R's perspective, we can think of HPC in terms of two, maybe three 
 
 3.  Compiled code: Write your own low-level code (if R doesn't has it yet...)
 
-Big Data
+In the case of Big Data, some solutions include:
 
 *   Buy a bigger computer/RAM memory (not the best solution!)
     
@@ -130,5 +132,210 @@ Big Data
     from the [Matrix](https://CRAN.R-project.org/package=Matrix) R package)
     
 
+## Parallel computing in R
 
+As mentioned earlier, R was not designed to work with parallel computing out-of-the-box. While there are some ways to go around this such as:
+
+*   Obtaining the R version owned by Microsoft ([Microsoft R Open](https://mran.microsoft.com/)), which has some features, and in particular, linear algebra routines compiled in parallel;
+
+*   Compiling R with BLAS allowing for parallel computing (a couple of examples [here](https://www.r-bloggers.com/why-is-r-slow-some-explanations-and-mklopenblas-setup-to-try-to-fix-this/) and [here](https://www.r-bloggers.com/compile-r-and-openblas-from-source-guide/));
+
+*   Getting the opensource version pqR ([pretty quick R](http://www.pqr-project.org/), which at the writing of this has a stable release published on February 19th, 2019);
+
+When it comes to use "normal" R, there are several alternatives (just take a look at the [High-Performance Computing Task View](https://cran.r-project.org/web/views/HighPerformanceComputing.html)). Here we will focus on the following R-packages/tools for explicit parallelism:
+
+
+1.  **parallel**: R package that provides '[s]upport for parallel computation, including random-number generation'.
+
+2.  RcppArmadillo + OpenMP
+    
+    *   **RcppArmadillo**: 'Armadillo is a C++ linear algebra library, aiming towards a good balance between speed and ease of use.' '[RcppArmadillo] brings the power of Armadillo to R.'
+        
+    *  **OpenMP**: 'Open Multi-Processing is an application programming interface (API) that supports multi-platform shared memory multiprocessing programming in C, C++, and Fortran, on most platforms, processor architectures and operating systems, including Solaris, AIX, HP-UX, Linux, macOS, and Windows.' ([Wiki](https://en.wikipedia.org/wiki/OpenMP))
+
+Implicit parallelism, on the other hand, are out-of-the-box tools that allow the programmer not to worry about parallelization, e.g. such as [**gpuR**](https://cran.r-project.org/package=gpuR) for Matrix manipulation using GPU.
+
+### The parallel package
+
+1.  Create a cluster:
+    
+    a.  PSOCK Cluster: `makePSOCKCluster`: Creates brand new R Sessions (so nothing is inherited from the master), even in other computers!
+        
+    b.  Fork Cluster: `makeForkCluster`: Using OS [Forking](https://en.wikipedia.org/wiki/Fork_(system_call)), copies the current R session locally (so everything is inherited from the master up to that point). Not available on Windows.
+    
+    c.  Other: `makeCluster` passed to **snow**
+    
+2.  Copy/prepare each R session:
+
+    a.  Copy objects with `clusterExport`
+
+    b.  Pass expressions with `clusterEvalQ`
+
+    c.  Set a seed
+    
+
+3.  Do your call:
+
+    a.  `mclapply`, `mcmapply` if you are using **Fork**
+
+    b.  `parApply`, `parLapply`, etc. if you are using **PSOCK**
+
+    
+4.  Stop the cluster with `clusterStop`
+    
+### parallel example 1: Parallel RNG
+
+
+```r
+# 1. CREATING A CLUSTER
+library(parallel)
+cl <- makePSOCKcluster(2)    
+
+# 2. PREPARING THE CLUSTER
+clusterSetRNGStream(cl, 123) # Equivalent to `set.seed(123)`
+
+# 3. DO YOUR CALL
+ans <- parSapply(cl, 1:2, function(x) runif(1e3))
+(ans0 <- var(ans))
+```
+
+```
+#               [,1]          [,2]
+# [1,]  0.0861888293 -0.0001633431
+# [2,] -0.0001633431  0.0853841838
+```
+
+```r
+# I want to get the same!
+clusterSetRNGStream(cl, 123)
+ans1 <- var(parSapply(cl, 1:2, function(x) runif(1e3)))
+
+ans0 - ans1 # A matrix of zeros
+```
+
+```
+#      [,1] [,2]
+# [1,]    0    0
+# [2,]    0    0
+```
+
+```r
+# 4. STOP THE CLUSTER
+stopCluster(cl)
+```
+
+In the case of `makeForkCluster`
+
+
+```r
+# 1. CREATING A CLUSTER
+library(parallel)
+
+# The fork cluster will copy the -nsims- object
+nsims <- 1e3
+cl    <- makeForkCluster(2)    
+
+# 2. PREPARING THE CLUSTER
+RNGkind("L'Ecuyer-CMRG")
+set.seed(123) 
+
+# 3. DO YOUR CALL
+ans <- do.call(cbind, mclapply(1:2, function(x) {
+  runif(nsims) # Look! we use the nsims object!
+               # This would have fail in makePSOCKCluster
+               # if we didn't copy -nsims- first.
+  }))
+(ans0 <- var(ans))
+```
+
+```
+#            [,1]       [,2]
+# [1,] 0.08538418 0.00239079
+# [2,] 0.00239079 0.08114219
+```
+
+```r
+# Same sequence with same seed
+set.seed(123) 
+ans1 <- var(do.call(cbind, mclapply(1:2, function(x) runif(nsims))))
+
+ans0 - ans1 # A matrix of zeros
+```
+
+```
+#      [,1] [,2]
+# [1,]    0    0
+# [2,]    0    0
+```
+
+```r
+# 4. STOP THE CLUSTER
+stopCluster(cl)
+```
+
+## parallel example 2: Simulating $\pi$
+
+
+*   We know that $\pi = \frac{A}{r^2}$. We approximate it by randomly adding points $x$ to a square of size 2 centered at the origin.
+
+*   So, we approximate $\pi$ as $\Pr\{\|x\| \leq 1\}\times 2^2$
+
+The R code to do this
+
+
+```r
+pisim <- function(i, nsim) {  # Notice we don't use the -i-
+  # Random points
+  ans  <- matrix(runif(nsim*2), ncol=2)
+  
+  # Distance to the origin
+  ans  <- sqrt(rowSums(ans^2))
+  
+  # Estimated pi
+  (sum(ans <= 1)*4)/nsim
+}
+```
+
+```r
+# Setup
+cl <- makePSOCKcluster(10)
+clusterSetRNGStream(cl, 123)
+
+# Number of simulations we want each time to run
+nsim <- 1e5
+
+# We need to make -nsim- and -pisim- available to the
+# cluster
+clusterExport(cl, c("nsim", "pisim"))
+
+# Benchmarking: parSapply and sapply will run this simulation
+# a hundred times each, so at the end we have 1e5*100 points
+# to approximate pi
+rbenchmark::benchmark(
+  parallel = parSapply(cl, 1:100, pisim, nsim=nsim),
+  serial   = sapply(1:100, pisim, nsim=nsim), replications = 1
+)[,1:4]
+```
+
+```
+#       test replications elapsed relative
+# 1 parallel            1   0.302    1.000
+# 2   serial            1   1.556    5.152
+```
+
+
+```r
+ans_par <- parSapply(cl, 1:100, pisim, nsim=nsim)
+ans_ser <- sapply(1:100, pisim, nsim=nsim)
+stopCluster(cl)
+```
+
+
+```
+#      par      ser        R 
+# 3.141561 3.141247 3.141593
+```
+
+
+### Speedup things with Rcpp + OpenMP
 
