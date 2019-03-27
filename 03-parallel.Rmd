@@ -11,11 +11,11 @@ The rest of this chapter develops under the assumption that the reader has some 
 
 ## What is parallel computing, anyway? 
 
-In very simple terms, parallel computing is all about making things running faster. More concrete, while there are plenty ways of accelerating calculations, parallel computing is all about doing multiple things simulateneously.
+In very simple terms, parallel computing is all about making things run faster. More concrete, while there are plenty ways of accelerating calculations, parallel computing is all about doing multiple things simultaneously.
 
 Sequential computing, on the other hand, is what we usually see in R. When we make a call to a function, most of the time R is doing calculations using a single processor. While this may not be a problem if your call takes just a couple of seconds, it may be critical if, for example, the program needs to make a significant number of such calls, say 1,000, in order to be completed.
 
-While not a general rule, most of the time computationally intensive programs can be splitted in such a way that its components can be executed in a isolated way, this is, without rellying in the other parts to be completed.
+While not a general rule, most of the time computationally intensive programs can be split in such a way that its components can be executed in a isolated way, this is, without relying in the other parts to be completed.
 
 For example, suppose that you have a function that takes a number and multiplies it by 2, let's call it `f`:
 
@@ -23,7 +23,7 @@ For example, suppose that you have a function that takes a number and multiplies
 f <- function(n) n*2
 ```
 
-In R, this simple function can be applied seemesly to a vector, for example:
+In R, this simple function can be applied seamlessly to a vector, for example:
 
 ```{r 03-parallel-times2-applied}
 x <- 1:4
@@ -34,7 +34,7 @@ If we were able to see how calculations are taking place in R, we could represen
 
 ![Here we are using a single core. The function is applied one element at a time, leaving the other 3 cores without usage.](figure/pll-computing-explained-serial.png){width="600px"}
 
-Now, in a parallel computing setting, the same function can be applied simulatenously to multiple elements of `x`, as in the following figure, where the number of cores matches the number of elements/tasks that need to be processed:
+Now, in a parallel computing setting, the same function can be applied simultaneously to multiple elements of `x`, as in the following figure, where the number of cores matches the number of elements/tasks that need to be processed:
 
 ![In this more intelligent way of computation, we are taking full advantage of our computer by using all 4 cores at the same time. This will translate in a reduced computation time which, in the case of complicated/long calculations, can be an important speed gain.](figure/pll-computing-explained-parallel.png){width="600px"}
 
@@ -62,13 +62,13 @@ A lot of times we feel pushed towards writing the code as efficient as possible.
 // 
 ```
 
-While optimizing a program may be important in some cases, time constraints and redability may be more important in relative terms. As a rule of thumb, you will only want to optimize your code if by doing so the potential speed gains are worthwhile, for example, reducing computation speed to half of the original time in a algorithm that takes more than just a few seconds. Other examples include:
+While optimizing a program may be important in some cases, time constraints and readability may be more important in relative terms. As a rule of thumb, you will only want to optimize your code if by doing so the potential speed gains are worthwhile, for example, reducing computation speed to half of the original time in a algorithm that takes more than just a few seconds. Other examples include:
 
 Good idea when:
 
 *   You are writing a log-likelihood Function that you need to maximize. Solvers take, for example, at least 5 calls to the objective function so it makes sense to speed up the call.
 
-*   Even more relevant than a simple optimization, if the function needs to be called thousands of times like in a MCMC algorithm, then it definetly makes sense to improve speed.
+*   Even more relevant than a simple optimization, if the function needs to be called thousands of times like in a MCMC algorithm, then it definitely makes sense to improve speed.
 
 *   You are processing chunks of data in which each requires a significant amount of time to be processed.
 
@@ -78,9 +78,9 @@ Bad idea when:
 
 *   The section of the program you are trying to optimize is not the the actual bottle neck of the program[^bottleneck]
 
-[^bottleneck]: For more about how to identify code bottlenecks, take a look at the Profilinf section of this book [here](#profile-benchmark).
+[^bottleneck]: For more about how to identify code bottlenecks, take a look at the Profiling section of this book [here](#profile-benchmark).
 
-If your computational problem is reasonable enought to think about code optimization, and furthermore, implementing parallel computing, then the following diagram should be a useful guide to follow:
+If your computational problem is reasonable enough to think about code optimization, and furthermore, implementing parallel computing, then the following diagram should be a useful guide to follow:
 
 ![Ask yourself these questions before jumping into HPC!](figure/when_to_parallel.png)
 
@@ -98,7 +98,7 @@ A nice way to look at types of computation is through Flynn's taxonomy:
 
 ### What you need to know about Hardware
 
-One important thing to know is how many resources we have, and resources can be very different accross systems. In general, we can talk about a computer's processing unit, CPU, as a collection of cores which are grouped/arranged in sockets. More over, modern CPUs such as those built by intel have what they call multithreaded technology, which in raw terms means a single physical core behaving as multiple ones. The following figure shows a nice illustration of this:
+One important thing to know is how many resources we have, and resources can be very different across systems. In general, we can talk about a computer's processing unit, CPU, as a collection of cores which are grouped/arranged in sockets. More over, modern CPUs such as those built by intel have what they call multithreaded technology, which in raw terms means a single physical core behaving as multiple ones. The following figure shows a nice illustration of this:
 
 
 ![Taxonomy of CPUs (Downloaded from de https://slurm.schedmd.com/mc_support.html)](figure/cpu-slurm.png)
