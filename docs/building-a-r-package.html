@@ -135,7 +135,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2" data-path="coding-standards.html"><a href="coding-standards.html#helpful-suggestions"><i class="fa fa-check"></i><b>2.2</b> Helpful suggestions</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="building-a-r-package.html"><a href="building-a-r-package.html"><i class="fa fa-check"></i><b>3</b> Building a R package</a><ul>
-<li class="chapter" data-level="3.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#resources"><i class="fa fa-check"></i><b>3.1</b> Resources</a></li>
+<li class="chapter" data-level="3.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
+<li class="chapter" data-level="3.2" data-path="building-a-r-package.html"><a href="building-a-r-package.html#preperation"><i class="fa fa-check"></i><b>3.2</b> Preperation</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#naming-your-r-package"><i class="fa fa-check"></i><b>3.2.1</b> Naming your R package</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="building-a-r-package.html"><a href="building-a-r-package.html#minimal-r-package"><i class="fa fa-check"></i><b>3.3</b> Minimal R Package</a></li>
+<li class="chapter" data-level="3.4" data-path="building-a-r-package.html"><a href="building-a-r-package.html#additional-components"><i class="fa fa-check"></i><b>3.4</b> Additional Components</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#readme"><i class="fa fa-check"></i><b>3.4.1</b> README</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="building-a-r-package.html"><a href="building-a-r-package.html#resources"><i class="fa fa-check"></i><b>3.5</b> Resources</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="parallel-computing.html"><a href="parallel-computing.html"><i class="fa fa-check"></i><b>4</b> Parallel computing</a></li>
 <li class="chapter" data-level="5" data-path="testing.html"><a href="testing.html"><i class="fa fa-check"></i><b>5</b> Testing</a></li>
@@ -172,15 +180,76 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="building-a-r-package" class="section level1">
 <h1><span class="header-section-number">3</span> Building a R package</h1>
+<div id="motivation" class="section level2">
+<h2><span class="header-section-number">3.1</span> Motivation</h2>
+<p>This chapter will show you how to create a R package with varrying number of additions. From a simple minimal package for personal use to a fully-fleshed package.</p>
+<p>Creating a R package is not only done for publication. It also helps you stay organizes, save yourself time while still letting you share your code with other people. Learning what goes into creating a package can be a mouthful at first but the conventions and rules revolving around packages makes the creation easy.</p>
+</div>
+<div id="preperation" class="section level2">
+<h2><span class="header-section-number">3.2</span> Preperation</h2>
+<p>To get started it would be preferriable for you to have git installed on your machine and have a Github account. <a href="https://happygitwithr.com/" class="uri">https://happygitwithr.com/</a> provides a brilliant and thorough walkthrough of using git/Github with R.</p>
+<p>In addition to git, you will also need the following packages</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;devtools&quot;</span>, <span class="st">&quot;roxygen2&quot;</span>, <span class="st">&quot;testthat&quot;</span>, <span class="st">&quot;knitr&quot;</span>))</code></pre>
+<p>If you are planning on using compiled code you will need to install the following depending on your operating system:</p>
+<p>On Windows, download and install <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a>.
+On Mac, download and install XCode (available for free in the App Store) or the <a href="http://developer.apple.com/downloads">Command Line Tools for Xcode</a>.<br />
+On Linux, download and install the R development tools.</p>
+<div id="naming-your-r-package" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Naming your R package</h3>
+<p>When creating a package you need to give it at name. The name</p>
+<ul>
+<li>can only consist of letters, numbers and periods</li>
+<li>must start with a letter, and</li>
+<li>cannot end with a period</li>
+</ul>
+<p>Furthermore we recommend that you don’t use periods and stick with letters as much as possible. You need a unique name, mainly because of the fact that if you plan on getting your package on CRAN or bioconductor you can’t overlap with any of their names. A easy check for can be done using the <a href="https://github.com/ropenscilabs/available">available package</a>. <strong>available</strong> also checks across acronyms, slang and other meanings that you might have missed. Secondly try to pick a name that is googleable.</p>
+</div>
+</div>
+<div id="minimal-r-package" class="section level2">
+<h2><span class="header-section-number">3.3</span> Minimal R Package</h2>
+<p>Creating a package can easily be done using the <strong>usethis</strong> package, all you need is to provide a path to the directory you want the pacakge to be created in.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">create_package</span>(<span class="st">&quot;~/path/to/packagename&quot;</span>)</code></pre>
+<p>If you are using Rstudio you should already be transported to a project at the specified location with the following content</p>
+<p><img src="screenshots/r-packages/minimal-package.png" /></p>
+<p>For now we will focus on the <code>/R</code> folder and the <code>DESCRIPTION</code> files as the remaining files/folders should be automatically modified if we use <strong>usethis</strong>.</p>
+<p>The <code>DESCRIPTION</code> is our first stop. You should make yourself the author,</p>
+<pre><code>Authors@R: 
+    person(&quot;given name&quot;, &quot;family name&quot;, role = c(&quot;aut&quot;, &quot;cre&quot;), &quot;contact@mail.com&quot;)</code></pre>
+<p>The roles <code>aut</code> and <code>cre</code> stand for author and creator respectively. More details regarding use of roles can be found <a href="https://r-pkgs.org/description.html#author">here</a>. Next you need to fill in the <code>Title</code> and <code>Description</code> fields. The <code>Title</code> should be a short and simple description of the package. Must be plain text, title-case (This Sentence Is Title Case), not end in a period and should preferable be les then 65 characters. The <code>Description</code> fields is the more detailed version of the <code>Title</code> field. It should span multiple lines, each indented 4 spaces (first excluded) and being less then 80 characters long. This is a fairly limited space so further details should be included in the readme.</p>
+</div>
+<div id="additional-components" class="section level2">
+<h2><span class="header-section-number">3.4</span> Additional Components</h2>
+<div id="readme" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> README</h3>
+</div>
+</div>
 <div id="resources" class="section level2">
-<h2><span class="header-section-number">3.1</span> Resources</h2>
-<p><a href="https://r-pkgs.org/" class="uri">https://r-pkgs.org/</a></p>
+<h2><span class="header-section-number">3.5</span> Resources</h2>
+<p>Usethis package
+<a href="https://github.com/r-lib/usethis" class="uri">https://github.com/r-lib/usethis</a></p>
+<p>Writing a R package slides
+<a href="https://github.com/jalapic/RPackage/blob/master/Writing%20an%20R%20Package.pdf" class="uri">https://github.com/jalapic/RPackage/blob/master/Writing%20an%20R%20Package.pdf</a></p>
+<p>Cran documentation
+<a href="https://cran.r-project.org/doc/manuals/R-exts.html" class="uri">https://cran.r-project.org/doc/manuals/R-exts.html</a></p>
+<p>Pick a license
+<a href="https://blog.codinghorror.com/pick-a-license-any-license/" class="uri">https://blog.codinghorror.com/pick-a-license-any-license/</a>
+<a href="https://choosealicense.com/licenses/" class="uri">https://choosealicense.com/licenses/</a>
+<a href="https://tldrlegal.com/" class="uri">https://tldrlegal.com/</a>
+<a href="https://cran.r-project.org/doc/manuals/R-exts.html#The-DESCRIPTION-file" class="uri">https://cran.r-project.org/doc/manuals/R-exts.html#The-DESCRIPTION-file</a></p>
+<p>Build a Basic Package
+<a href="http://rpubs.com/jennybc/build-a-basic-package" class="uri">http://rpubs.com/jennybc/build-a-basic-package</a></p>
+<p>Deployment options
+<a href="https://twitter.com/WeAreRLadies/status/1110694338068140032" class="uri">https://twitter.com/WeAreRLadies/status/1110694338068140032</a></p>
+<p>R Packages
+<a href="https://r-pkgs.org/" class="uri">https://r-pkgs.org/</a></p>
 <p><a href="https://www.hvitfeldt.me/blog/usethis-workflow-for-package-development/" class="uri">https://www.hvitfeldt.me/blog/usethis-workflow-for-package-development/</a></p>
 <p><a href="https://usethis.r-lib.org/" class="uri">https://usethis.r-lib.org/</a></p>
-<p><a href="https://www.rstudio.com/resources/videos/you-can-make-a-package-in-20-minutes/" class="uri">https://www.rstudio.com/resources/videos/you-can-make-a-package-in-20-minutes/</a></p>
+<p>You can make a package in 20 minutes - Rstudio Conf Talk by Jim Hester
+<a href="https://www.rstudio.com/resources/videos/you-can-make-a-package-in-20-minutes/" class="uri">https://www.rstudio.com/resources/videos/you-can-make-a-package-in-20-minutes/</a></p>
 <p><a href="https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/" class="uri">https://hilaryparker.com/2014/04/29/writing-an-r-package-from-scratch/</a></p>
 <p><a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html" class="uri">https://cran.r-project.org/doc/manuals/r-release/R-exts.html</a></p>
 <p><a href="https://ropensci.github.io/dev_guide/" class="uri">https://ropensci.github.io/dev_guide/</a></p>
+<p><a href="https://ropensci.org/blog/2018/03/16/thanking-reviewers-in-metadata/" class="uri">https://ropensci.org/blog/2018/03/16/thanking-reviewers-in-metadata/</a></p>
 
 </div>
 </div>

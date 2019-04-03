@@ -135,7 +135,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2" data-path="coding-standards.html"><a href="coding-standards.html#helpful-suggestions"><i class="fa fa-check"></i><b>2.2</b> Helpful suggestions</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="building-a-r-package.html"><a href="building-a-r-package.html"><i class="fa fa-check"></i><b>3</b> Building a R package</a><ul>
-<li class="chapter" data-level="3.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#resources"><i class="fa fa-check"></i><b>3.1</b> Resources</a></li>
+<li class="chapter" data-level="3.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
+<li class="chapter" data-level="3.2" data-path="building-a-r-package.html"><a href="building-a-r-package.html#preperation"><i class="fa fa-check"></i><b>3.2</b> Preperation</a></li>
+<li class="chapter" data-level="3.3" data-path="building-a-r-package.html"><a href="building-a-r-package.html#minimal-r-package"><i class="fa fa-check"></i><b>3.3</b> Minimal R Package</a></li>
+<li class="chapter" data-level="3.4" data-path="building-a-r-package.html"><a href="building-a-r-package.html#additional-components"><i class="fa fa-check"></i><b>3.4</b> Additional Components</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#readme"><i class="fa fa-check"></i><b>3.4.1</b> README</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="building-a-r-package.html"><a href="building-a-r-package.html#resources"><i class="fa fa-check"></i><b>3.5</b> Resources</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="parallel-computing.html"><a href="parallel-computing.html"><i class="fa fa-check"></i><b>4</b> Parallel computing</a></li>
 <li class="chapter" data-level="5" data-path="testing.html"><a href="testing.html"><i class="fa fa-check"></i><b>5</b> Testing</a></li>
@@ -191,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   square_root &lt;-<span class="st"> </span><span class="kw">exp</span>(<span class="dv">1</span>) <span class="op">^</span><span class="st"> </span>(<span class="dv">1</span><span class="op">/</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">log</span>(data))
 })</code></pre>
 <p>Another way if you are using the Rstudio IDE, comes from the navigation bar where you can access the profiling tool.</p>
-<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
 <img src="screenshots/profiling-benchmark/navbar.png" alt="Profile location in Rstudio IDE navigation bar." width="100%" />
 <p class="caption">
 Figure 6.1: Profile location in Rstudio IDE navigation bar.
@@ -202,7 +208,7 @@ Figure 6.1: Profile location in Rstudio IDE navigation bar.
 <li>“Profile selected line(s)”</li>
 <li>“Start profiling” &amp; “Stop profiling”</li>
 </ul>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-3"></span>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-5"></span>
 <img src="screenshots/profiling-benchmark/profile-submenu.png" alt="Profiling actions." width="50%" />
 <p class="caption">
 Figure 6.2: Profiling actions.
@@ -211,14 +217,14 @@ Figure 6.2: Profiling actions.
 <p>Being able to profile selected lines of code is great if you have a short and compact piece of code that easily can be highlighted and tested.</p>
 <p>On the other hand is the ability start and stop the profiling whenever you want a powerful tool. In addition to being able to profile code from different areas, you are also able to stop profiling before the code is done executing, which you aren’t able to in the previous 2 methods. This is useful if you want to profile a snapshot of a long-running simulation as it can have very consistent behavior since it is running the same thing millions of time.</p>
 <p>No matter which of the three way you do your profile you will be presented with a page with a frame-graph</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-4"></span>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-6"></span>
 <img src="screenshots/profiling-benchmark/flamegraph.png" alt="profvis output showing source on top and flame graph below." width="75%" />
 <p class="caption">
 Figure 6.3: profvis output showing source on top and flame graph below.
 </p>
 </div>
 <p>This interactive panel shows how much time and memory is being spend on each line of code. From here you should be able to identify Another useful view can be found by clicking on the “data” tab at the top. This shows how long time is being spend in each expression. We can see in this example that the power operator <code>^</code> is taking the majority of the time.</p>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-5"></span>
+<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-7"></span>
 <img src="screenshots/profiling-benchmark/dataview.png" alt="profvis data view showcases results by expresion in stead of by line." width="75%" />
 <p class="caption">
 Figure 6.4: profvis data view showcases results by expresion in stead of by line.
@@ -271,14 +277,14 @@ Figure 6.4: profvis data view showcases results by expresion in stead of by line
   <span class="kw">fibonacci</span>(<span class="dv">32</span>)
   })</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.365   0.072   2.436</code></pre>
+##   2.185   0.017   2.205</code></pre>
 <p>The first two numbers are the are the total user and system CPU times of the current R process and any child processes on which it has waited, and the third entry is the ‘real’ elapsed time since the process was started. An alternative with the same functionality from the <a href="http://bench.r-lib.org">bench</a> package is the function <code>system_time()</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(bench)
 <span class="kw">system_time</span>({
   <span class="kw">fibonacci</span>(<span class="dv">32</span>)
   })</code></pre>
 <pre><code>## process    real 
-##   2.29s   2.29s</code></pre>
+##    2.1s    2.1s</code></pre>
 <p>where the two values are</p>
 <ul>
 <li>process - The process CPU usage of the expression evaluation.</li>
@@ -289,7 +295,7 @@ Figure 6.4: profvis data view showcases results by expresion in stead of by line
 <span class="kw">tic</span>()
 x &lt;-<span class="st"> </span><span class="kw">fibonacci</span>(<span class="dv">32</span>)
 <span class="kw">toc</span>()</code></pre>
-<pre><code>## Total: 2.368 sec elapsed</code></pre>
+<pre><code>## 2.239 sec elapsed</code></pre>
 <p>In addition does this package extend the timing functionality in such a way that we are able to measure times in nested context. In the following example we are generating some data and fitting a model. Calling <code>tic()</code> another time before the <code>toc()</code> allows us to measure subsections of the whole.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tictoc)
 <span class="kw">tic</span>(<span class="st">&quot;Total&quot;</span>)
@@ -303,9 +309,9 @@ x &lt;-<span class="st"> </span><span class="kw">fibonacci</span>(<span class="d
  model &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>X)
  <span class="kw">toc</span>()
 <span class="kw">toc</span>()</code></pre>
-<pre><code>## Data Generation: 0.296 sec elapsed
-## Model Fitting: 3.873 sec elapsed
-## Total: 4.171 sec elapsed</code></pre>
+<pre><code>## Data Generation: 0.397 sec elapsed
+## Model Fitting: 4.005 sec elapsed
+## Total: 4.404 sec elapsed</code></pre>
 <p>This can be useful if you want to be able to time the overall script as well as parts of it. Notice how each timing is named.</p>
 </div>
 <div id="fast-code---microbenchmarking" class="section level3">
@@ -319,10 +325,10 @@ bench<span class="op">::</span><span class="kw">mark</span>(
   <span class="kw">cov</span>(x, x)
 )</code></pre>
 <pre><code>## # A tibble: 2 x 10
-##   expression    min   mean median   max `itr/sec` mem_alloc  n_gc n_itr
-##   &lt;chr&gt;      &lt;bch:&gt; &lt;bch:&gt; &lt;bch:&gt; &lt;bch&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;
-## 1 var(x)     22.7µs 29.1µs 28.7µs 108µs    34407.        0B     2  9998
-## 2 cov(x, x)  41.5µs 49.4µs 49.4µs 147µs    20254.        0B     4  9109
+##   expression    min  mean median   max `itr/sec` mem_alloc  n_gc n_itr
+##   &lt;chr&gt;      &lt;bch:&gt; &lt;bch&gt; &lt;bch:&gt; &lt;bch&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 var(x)     23.1µs  34µs 28.9µs 209µs    29439.    13.7KB     4  9996
+## 2 cov(x, x)  43.4µs  53µs 51.8µs 249µs    18855.    47.5KB     7  8955
 ## # … with 1 more variable: total_time &lt;bch:tm&gt;</code></pre>
 <p><code>mark()</code> also checks that all the expressions return the same output as a sanity check. Notice the units</p>
 <ul>
