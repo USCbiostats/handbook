@@ -55,7 +55,15 @@ Authors@R:
 
 The roles `aut` and `cre` stand for author and creator respectively. More details regarding use of roles can be found [here](https://r-pkgs.org/description.html#author). Next you need to fill in the `Title` and `Description` fields. The `Title` should be a short and simple description of the package. Must be plain text, title-case (This Sentence Is Title Case), not end in a period and should preferable be les then 65 characters. The `Description` fields is the more detailed version of the `Title` field. It should span multiple lines, each indented 4 spaces (first excluded) and being less then 80 characters long. This is a fairly limited space so further details should be included in the readme.  
 
+The package created here doesn't provide anything in terms of functions or data. Adding these objects will be the subject of the next section.  
+
 ## Additional Components
+
+This section will introduce various components you can include in your package to improve its functionality and useability. 
+
+### R code `R/`
+
+
 
 ### README {#readme}
 

@@ -136,10 +136,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="building-a-r-package.html"><a href="building-a-r-package.html"><i class="fa fa-check"></i><b>3</b> Building a R package</a><ul>
 <li class="chapter" data-level="3.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
-<li class="chapter" data-level="3.2" data-path="building-a-r-package.html"><a href="building-a-r-package.html#preperation"><i class="fa fa-check"></i><b>3.2</b> Preperation</a></li>
+<li class="chapter" data-level="3.2" data-path="building-a-r-package.html"><a href="building-a-r-package.html#preperation"><i class="fa fa-check"></i><b>3.2</b> Preperation</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#naming-your-r-package"><i class="fa fa-check"></i><b>3.2.1</b> Naming your R package</a></li>
+</ul></li>
 <li class="chapter" data-level="3.3" data-path="building-a-r-package.html"><a href="building-a-r-package.html#minimal-r-package"><i class="fa fa-check"></i><b>3.3</b> Minimal R Package</a></li>
 <li class="chapter" data-level="3.4" data-path="building-a-r-package.html"><a href="building-a-r-package.html#additional-components"><i class="fa fa-check"></i><b>3.4</b> Additional Components</a><ul>
-<li class="chapter" data-level="3.4.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#readme"><i class="fa fa-check"></i><b>3.4.1</b> README</a></li>
+<li class="chapter" data-level="3.4.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#r-code-r"><i class="fa fa-check"></i><b>3.4.1</b> R code <code>R/</code></a></li>
+<li class="chapter" data-level="3.4.2" data-path="building-a-r-package.html"><a href="building-a-r-package.html#readme"><i class="fa fa-check"></i><b>3.4.2</b> README</a></li>
 </ul></li>
 <li class="chapter" data-level="3.5" data-path="building-a-r-package.html"><a href="building-a-r-package.html#resources"><i class="fa fa-check"></i><b>3.5</b> Resources</a></li>
 </ul></li>
@@ -295,7 +298,7 @@ Figure 6.4: profvis data view showcases results by expresion in stead of by line
 <span class="kw">tic</span>()
 x &lt;-<span class="st"> </span><span class="kw">fibonacci</span>(<span class="dv">32</span>)
 <span class="kw">toc</span>()</code></pre>
-<pre><code>## 2.239 sec elapsed</code></pre>
+<pre><code>## 2.731 sec elapsed</code></pre>
 <p>In addition does this package extend the timing functionality in such a way that we are able to measure times in nested context. In the following example we are generating some data and fitting a model. Calling <code>tic()</code> another time before the <code>toc()</code> allows us to measure subsections of the whole.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tictoc)
 <span class="kw">tic</span>(<span class="st">&quot;Total&quot;</span>)
@@ -325,10 +328,10 @@ bench<span class="op">::</span><span class="kw">mark</span>(
   <span class="kw">cov</span>(x, x)
 )</code></pre>
 <pre><code>## # A tibble: 2 x 10
-##   expression    min  mean median   max `itr/sec` mem_alloc  n_gc n_itr
-##   &lt;chr&gt;      &lt;bch:&gt; &lt;bch&gt; &lt;bch:&gt; &lt;bch&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;
-## 1 var(x)     23.1µs  34µs 28.9µs 209µs    29439.    13.7KB     4  9996
-## 2 cov(x, x)  43.4µs  53µs 51.8µs 249µs    18855.    47.5KB     7  8955
+##   expression    min   mean median   max `itr/sec` mem_alloc  n_gc n_itr
+##   &lt;chr&gt;      &lt;bch:&gt; &lt;bch:&gt; &lt;bch:&gt; &lt;bch&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;
+## 1 var(x)     23.8µs 29.2µs 28.5µs 132µs    34242.    13.7KB     6  9994
+## 2 cov(x, x)  43.3µs 54.5µs 52.5µs 214µs    18346.    47.5KB    10  8447
 ## # … with 1 more variable: total_time &lt;bch:tm&gt;</code></pre>
 <p><code>mark()</code> also checks that all the expressions return the same output as a sanity check. Notice the units</p>
 <ul>
