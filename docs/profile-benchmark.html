@@ -137,10 +137,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3" data-path="building-a-r-package.html"><a href="building-a-r-package.html"><i class="fa fa-check"></i><b>3</b> Building a R package</a><ul>
 <li class="chapter" data-level="3.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#resources"><i class="fa fa-check"></i><b>3.1</b> Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="parallel-computing.html"><a href="parallel-computing.html"><i class="fa fa-check"></i><b>4</b> Parallel computing</a></li>
+<li class="chapter" data-level="4" data-path="parallel-computing.html"><a href="parallel-computing.html"><i class="fa fa-check"></i><b>4</b> Parallel computing</a><ul>
+<li class="chapter" data-level="4.1" data-path="parallel-computing.html"><a href="parallel-computing.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="parallel-computing.html"><a href="parallel-computing.html#what-is-parallel-computing-anyway"><i class="fa fa-check"></i><b>4.2</b> What is parallel computing, anyway?</a></li>
+<li class="chapter" data-level="4.3" data-path="parallel-computing.html"><a href="parallel-computing.html#when-is-it-a-good-idea"><i class="fa fa-check"></i><b>4.3</b> When is it a good idea?</a></li>
+<li class="chapter" data-level="4.4" data-path="parallel-computing.html"><a href="parallel-computing.html#fundamentals"><i class="fa fa-check"></i><b>4.4</b> Fundamentals</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="parallel-computing.html"><a href="parallel-computing.html#types-of-parallelisms"><i class="fa fa-check"></i><b>4.4.1</b> Types of parallelisms</a></li>
+<li class="chapter" data-level="4.4.2" data-path="parallel-computing.html"><a href="parallel-computing.html#what-you-need-to-know-about-hardware"><i class="fa fa-check"></i><b>4.4.2</b> What you need to know about Hardware</a></li>
+<li class="chapter" data-level="4.4.3" data-path="parallel-computing.html"><a href="parallel-computing.html#hpc-in-r"><i class="fa fa-check"></i><b>4.4.3</b> HPC in R</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="parallel-computing.html"><a href="parallel-computing.html#parallel-computing-in-r"><i class="fa fa-check"></i><b>4.5</b> Parallel computing in R</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="parallel-computing.html"><a href="parallel-computing.html#the-parallel-package"><i class="fa fa-check"></i><b>4.5.1</b> The parallel package</a></li>
+<li class="chapter" data-level="4.5.2" data-path="parallel-computing.html"><a href="parallel-computing.html#parallel-example-1-parallel-rng"><i class="fa fa-check"></i><b>4.5.2</b> parallel example 1: Parallel RNG</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="parallel-computing.html"><a href="parallel-computing.html#parallel-example-2-simulating-pi"><i class="fa fa-check"></i><b>4.6</b> parallel example 2: Simulating <span class="math inline">\(\pi\)</span></a><ul>
+<li class="chapter" data-level="4.6.1" data-path="parallel-computing.html"><a href="parallel-computing.html#speedup-things-with-rcpp-openmp"><i class="fa fa-check"></i><b>4.6.1</b> Speedup things with Rcpp + OpenMP</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="testing.html"><a href="testing.html"><i class="fa fa-check"></i><b>5</b> Testing</a></li>
 <li class="chapter" data-level="6" data-path="profile-benchmark.html"><a href="profile-benchmark.html"><i class="fa fa-check"></i><b>6</b> Profiling and benchmarking</a><ul>
-<li class="chapter" data-level="6.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#introduction"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
 <li class="chapter" data-level="6.2" data-path="profile-benchmark.html"><a href="profile-benchmark.html#profiling"><i class="fa fa-check"></i><b>6.2</b> Profiling</a><ul>
 <li class="chapter" data-level="6.2.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#troubleshooting"><i class="fa fa-check"></i><b>6.2.1</b> Troubleshooting</a></li>
 </ul></li>
@@ -172,7 +188,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="profile-benchmark" class="section level1">
 <h1><span class="header-section-number">6</span> Profiling and benchmarking</h1>
-<div id="introduction" class="section level2">
+<div id="introduction-1" class="section level2">
 <h2><span class="header-section-number">6.1</span> Introduction</h2>
 <p>This chapter will introduce the the concepts of profiling and benchmarking. These concepts are universal withing programming . This chapter will focus on its practical implementation and usage in the R programming language.</p>
 <p>The overall goal of these techniques is to measure the performance of the code you have written. Remember this is a measure of speed, not a measure of correctness.</p>
@@ -271,14 +287,14 @@ Figure 6.4: profvis data view showcases results by expresion in stead of by line
   <span class="kw">fibonacci</span>(<span class="dv">32</span>)
   })</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.365   0.072   2.436</code></pre>
+##   2.784   0.008   2.791</code></pre>
 <p>The first two numbers are the are the total user and system CPU times of the current R process and any child processes on which it has waited, and the third entry is the ‘real’ elapsed time since the process was started. An alternative with the same functionality from the <a href="http://bench.r-lib.org">bench</a> package is the function <code>system_time()</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(bench)
 <span class="kw">system_time</span>({
   <span class="kw">fibonacci</span>(<span class="dv">32</span>)
   })</code></pre>
 <pre><code>## process    real 
-##   2.29s   2.29s</code></pre>
+##   2.57s   2.57s</code></pre>
 <p>where the two values are</p>
 <ul>
 <li>process - The process CPU usage of the expression evaluation.</li>
@@ -289,7 +305,7 @@ Figure 6.4: profvis data view showcases results by expresion in stead of by line
 <span class="kw">tic</span>()
 x &lt;-<span class="st"> </span><span class="kw">fibonacci</span>(<span class="dv">32</span>)
 <span class="kw">toc</span>()</code></pre>
-<pre><code>## Total: 2.368 sec elapsed</code></pre>
+<pre><code>## 2.83 sec elapsed</code></pre>
 <p>In addition does this package extend the timing functionality in such a way that we are able to measure times in nested context. In the following example we are generating some data and fitting a model. Calling <code>tic()</code> another time before the <code>toc()</code> allows us to measure subsections of the whole.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tictoc)
 <span class="kw">tic</span>(<span class="st">&quot;Total&quot;</span>)
@@ -303,9 +319,9 @@ x &lt;-<span class="st"> </span><span class="kw">fibonacci</span>(<span class="d
  model &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>X)
  <span class="kw">toc</span>()
 <span class="kw">toc</span>()</code></pre>
-<pre><code>## Data Generation: 0.296 sec elapsed
-## Model Fitting: 3.873 sec elapsed
-## Total: 4.171 sec elapsed</code></pre>
+<pre><code>## Data Generation: 0.404 sec elapsed
+## Model Fitting: 4.97 sec elapsed
+## Total: 5.377 sec elapsed</code></pre>
 <p>This can be useful if you want to be able to time the overall script as well as parts of it. Notice how each timing is named.</p>
 </div>
 <div id="fast-code---microbenchmarking" class="section level3">
@@ -321,8 +337,8 @@ bench<span class="op">::</span><span class="kw">mark</span>(
 <pre><code>## # A tibble: 2 x 10
 ##   expression    min   mean median   max `itr/sec` mem_alloc  n_gc n_itr
 ##   &lt;chr&gt;      &lt;bch:&gt; &lt;bch:&gt; &lt;bch:&gt; &lt;bch&gt;     &lt;dbl&gt; &lt;bch:byt&gt; &lt;dbl&gt; &lt;int&gt;
-## 1 var(x)     22.7µs 29.1µs 28.7µs 108µs    34407.        0B     2  9998
-## 2 cov(x, x)  41.5µs 49.4µs 49.4µs 147µs    20254.        0B     4  9109
+## 1 var(x)     29.1µs 34.5µs 32.9µs 209µs    28998.    13.7KB     7  9993
+## 2 cov(x, x)  53.3µs   64µs 59.2µs 353µs    15632.    47.5KB    10  7404
 ## # … with 1 more variable: total_time &lt;bch:tm&gt;</code></pre>
 <p><code>mark()</code> also checks that all the expressions return the same output as a sanity check. Notice the units</p>
 <ul>
@@ -339,6 +355,13 @@ Chapter on “Measuring performance” from Advanced R by Hadley Wickham. Covers
 
 </div>
 </div>
+
+
+
+
+
+
+
             </section>
 
           </div>
@@ -390,6 +413,19 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
