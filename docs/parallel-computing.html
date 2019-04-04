@@ -196,12 +196,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="what-is-parallel-computing-anyway" class="section level2">
 <h2><span class="header-section-number">4.2</span> What is parallel computing, anyway?</h2>
-<p>In very simple terms, parallel computing is all about making things running faster. More concrete, while there are plenty ways of accelerating calculations, parallel computing is all about doing multiple things simulateneously.</p>
+<p>In very simple terms, parallel computing is all about making things run faster. More concrete, while there are plenty ways of accelerating calculations, parallel computing is all about doing multiple things simultaneously.</p>
 <p>Sequential computing, on the other hand, is what we usually see in R. When we make a call to a function, most of the time R is doing calculations using a single processor. While this may not be a problem if your call takes just a couple of seconds, it may be critical if, for example, the program needs to make a significant number of such calls, say 1,000, in order to be completed.</p>
-<p>While not a general rule, most of the time computationally intensive programs can be splitted in such a way that its components can be executed in a isolated way, this is, without rellying in the other parts to be completed.</p>
+<p>While not a general rule, most of the time computationally intensive programs can be split in such a way that its components can be executed in a isolated way, this is, without relying in the other parts to be completed.</p>
 <p>For example, suppose that you have a function that takes a number and multiplies it by 2, let’s call it <code>f</code>:</p>
 <pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="cf">function</span>(n) n<span class="op">*</span><span class="dv">2</span></code></pre>
-<p>In R, this simple function can be applied seemesly to a vector, for example:</p>
+<p>In R, this simple function can be applied seamlessly to a vector, for example:</p>
 <pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>
 <span class="kw">f</span>(x)</code></pre>
 <pre><code>## [1] 2 4 6 8</code></pre>
@@ -210,7 +210,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <img src="figure/pll-computing-explained-serial.png" alt="Here we are using a single core. The function is applied one element at a time, leaving the other 3 cores without usage." width="600" />
 <p class="caption">Here we are using a single core. The function is applied one element at a time, leaving the other 3 cores without usage.</p>
 </div>
-<p>Now, in a parallel computing setting, the same function can be applied simulatenously to multiple elements of <code>x</code>, as in the following figure, where the number of cores matches the number of elements/tasks that need to be processed:</p>
+<p>Now, in a parallel computing setting, the same function can be applied simultaneously to multiple elements of <code>x</code>, as in the following figure, where the number of cores matches the number of elements/tasks that need to be processed:</p>
 <div class="figure">
 <img src="figure/pll-computing-explained-parallel.png" alt="In this more intelligent way of computation, we are taking full advantage of our computer by using all 4 cores at the same time. This will translate in a reduced computation time which, in the case of complicated/long calculations, can be an important speed gain." width="600" />
 <p class="caption">In this more intelligent way of computation, we are taking full advantage of our computer by using all 4 cores at the same time. This will translate in a reduced computation time which, in the case of complicated/long calculations, can be an important speed gain.</p>
@@ -231,11 +231,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 // 
 // total_hours_wasted_here = 42
 // </code></pre>
-<p>While optimizing a program may be important in some cases, time constraints and redability may be more important in relative terms. As a rule of thumb, you will only want to optimize your code if by doing so the potential speed gains are worthwhile, for example, reducing computation speed to half of the original time in a algorithm that takes more than just a few seconds. Other examples include:</p>
+<p>While optimizing a program may be important in some cases, time constraints and readability may be more important in relative terms. As a rule of thumb, you will only want to optimize your code if by doing so the potential speed gains are worthwhile, for example, reducing computation speed to half of the original time in a algorithm that takes more than just a few seconds. Other examples include:</p>
 <p>Good idea when:</p>
 <ul>
 <li><p>You are writing a log-likelihood Function that you need to maximize. Solvers take, for example, at least 5 calls to the objective function so it makes sense to speed up the call.</p></li>
-<li><p>Even more relevant than a simple optimization, if the function needs to be called thousands of times like in a MCMC algorithm, then it definetly makes sense to improve speed.</p></li>
+<li><p>Even more relevant than a simple optimization, if the function needs to be called thousands of times like in a MCMC algorithm, then it definitely makes sense to improve speed.</p></li>
 <li><p>You are processing chunks of data in which each requires a significant amount of time to be processed.</p></li>
 </ul>
 <p>Bad idea when:</p>
@@ -243,7 +243,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>The section of the program that you want to speed up already takes a relatively small time to be completed, for example, a few seconds or a fraction of a second.</p></li>
 <li><p>The section of the program you are trying to optimize is not the the actual bottle neck of the program<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p></li>
 </ul>
-<p>If your computational problem is reasonable enought to think about code optimization, and furthermore, implementing parallel computing, then the following diagram should be a useful guide to follow:</p>
+<p>If your computational problem is reasonable enough to think about code optimization, and furthermore, implementing parallel computing, then the following diagram should be a useful guide to follow:</p>
 <div class="figure">
 <img src="figure/when_to_parallel.png" alt="Ask yourself these questions before jumping into HPC!" />
 <p class="caption">Ask yourself these questions before jumping into HPC!</p>
@@ -263,14 +263,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="what-you-need-to-know-about-hardware" class="section level3">
 <h3><span class="header-section-number">4.4.2</span> What you need to know about Hardware</h3>
-<p>One important thing to know is how many resources we have, and resources can be very different accross systems. In general, we can talk about a computer’s processing unit, CPU, as a collection of cores which are grouped/arranged in sockets. More over, modern CPUs such as those built by intel have what they call multithreaded technology, which in raw terms means a single physical core behaving as multiple ones. The following figure shows a nice illustration of this:</p>
+<p>One important thing to know is how many resources we have, and resources can be very different across systems. In general, we can talk about a computer’s processing unit, CPU, as a collection of cores which are grouped/arranged in sockets. More over, modern CPUs such as those built by intel have what they call multithreaded technology, which in raw terms means a single physical core behaving as multiple ones. The following figure shows a nice illustration of this:</p>
 <div class="figure">
 <img src="figure/cpu-slurm.png" alt="Taxonomy of CPUs (Downloaded from de https://slurm.schedmd.com/mc_support.html)" />
 <p class="caption">Taxonomy of CPUs (Downloaded from de <a href="https://slurm.schedmd.com/mc_support.html" class="uri">https://slurm.schedmd.com/mc_support.html</a>)</p>
 </div>
 <p>Now, how many cores does your computer has, the parallel package can tell you that:</p>
 <pre class="sourceCode r"><code class="sourceCode r">parallel<span class="op">::</span><span class="kw">detectCores</span>()</code></pre>
-<pre><code>## [1] 4</code></pre>
+<pre><code>## [1] 12</code></pre>
 </div>
 <div id="hpc-in-r" class="section level3">
 <h3><span class="header-section-number">4.4.3</span> HPC in R</h3>
@@ -283,8 +283,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In the case of Big Data, some solutions include:</p>
 <ul>
 <li><p>Buy a bigger computer/RAM memory (not the best solution!)</p></li>
-<li><p>Use out-of-memory storage, i.e., don’t load all your data in the RAM.
-e.g. The <a href="https://CRAN.R-project.org/package=bigmemory">bigmemory</a>,
+<li><p>Use out-of-memory storage, i.e., don’t load all your data in the RAM. e.g.
+The <a href="https://CRAN.R-project.org/package=bigmemory">bigmemory</a>,
 <a href="https://CRAN.R-project.org/package=data.table">data.table</a>,
 <a href="https://CRAN.R-project.org/package=HadoopStreaming">HadoopStreaming</a> R packages</p></li>
 <li><p>Store it more efficiently, e.g.: Sparse Matrices (take a look at the <code>dgCMatrix</code> objects
@@ -445,7 +445,7 @@ ans_ser &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class
 <hr />
 <ol start="1">
 <li id="fn1"><p>Read the original post (now closed) <a href="https://stackoverflow.com/questions/184618/what-is-the-best-comment-in-source-code-you-have-ever-encountered">here</a>.<a href="parallel-computing.html#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>For more about how to identify code bottlenecks, take a look at the Profilinf section of this book <a href="profile-benchmark.html#profile-benchmark">here</a>.<a href="parallel-computing.html#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>For more about how to identify code bottlenecks, take a look at the Profiling section of this book <a href="profile-benchmark.html#profile-benchmark">here</a>.<a href="parallel-computing.html#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
             </section>
