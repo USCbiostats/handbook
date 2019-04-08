@@ -156,10 +156,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3.5" data-path="building-a-r-package.html"><a href="building-a-r-package.html#resources"><i class="fa fa-check"></i><b>3.5</b> Resources</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="parallel-computing.html"><a href="parallel-computing.html"><i class="fa fa-check"></i><b>4</b> Parallel computing</a></li>
+<li class="chapter" data-level="4" data-path="parallel-computing.html"><a href="parallel-computing.html"><i class="fa fa-check"></i><b>4</b> Parallel computing</a><ul>
+<li class="chapter" data-level="4.1" data-path="parallel-computing.html"><a href="parallel-computing.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="parallel-computing.html"><a href="parallel-computing.html#what-is-parallel-computing-anyway"><i class="fa fa-check"></i><b>4.2</b> What is parallel computing, anyway?</a></li>
+<li class="chapter" data-level="4.3" data-path="parallel-computing.html"><a href="parallel-computing.html#when-is-it-a-good-idea"><i class="fa fa-check"></i><b>4.3</b> When is it a good idea?</a></li>
+<li class="chapter" data-level="4.4" data-path="parallel-computing.html"><a href="parallel-computing.html#fundamentals"><i class="fa fa-check"></i><b>4.4</b> Fundamentals</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="parallel-computing.html"><a href="parallel-computing.html#types-of-parallelisms"><i class="fa fa-check"></i><b>4.4.1</b> Types of parallelisms</a></li>
+<li class="chapter" data-level="4.4.2" data-path="parallel-computing.html"><a href="parallel-computing.html#what-you-need-to-know-about-hardware"><i class="fa fa-check"></i><b>4.4.2</b> What you need to know about Hardware</a></li>
+<li class="chapter" data-level="4.4.3" data-path="parallel-computing.html"><a href="parallel-computing.html#hpc-in-r"><i class="fa fa-check"></i><b>4.4.3</b> HPC in R</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="parallel-computing.html"><a href="parallel-computing.html#parallel-computing-in-r"><i class="fa fa-check"></i><b>4.5</b> Parallel computing in R</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="parallel-computing.html"><a href="parallel-computing.html#the-parallel-package"><i class="fa fa-check"></i><b>4.5.1</b> The parallel package</a></li>
+<li class="chapter" data-level="4.5.2" data-path="parallel-computing.html"><a href="parallel-computing.html#parallel-example-1-parallel-rng"><i class="fa fa-check"></i><b>4.5.2</b> parallel example 1: Parallel RNG</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="parallel-computing.html"><a href="parallel-computing.html#parallel-example-2-simulating-pi"><i class="fa fa-check"></i><b>4.6</b> parallel example 2: Simulating <span class="math inline">\(\pi\)</span></a><ul>
+<li class="chapter" data-level="4.6.1" data-path="parallel-computing.html"><a href="parallel-computing.html#speedup-things-with-rcpp-openmp"><i class="fa fa-check"></i><b>4.6.1</b> Speedup things with Rcpp + OpenMP</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="testing.html"><a href="testing.html"><i class="fa fa-check"></i><b>5</b> Testing</a></li>
 <li class="chapter" data-level="6" data-path="profile-benchmark.html"><a href="profile-benchmark.html"><i class="fa fa-check"></i><b>6</b> Profiling and benchmarking</a><ul>
-<li class="chapter" data-level="6.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#introduction"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
+<li class="chapter" data-level="6.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
 <li class="chapter" data-level="6.2" data-path="profile-benchmark.html"><a href="profile-benchmark.html#profiling"><i class="fa fa-check"></i><b>6.2</b> Profiling</a><ul>
 <li class="chapter" data-level="6.2.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#troubleshooting"><i class="fa fa-check"></i><b>6.2.1</b> Troubleshooting</a></li>
 </ul></li>
@@ -434,6 +450,19 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
