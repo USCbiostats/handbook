@@ -5,24 +5,23 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>3 Building a R package | USC biostats R Handbook</title>
-  <meta name="description" content="Working document description best practices and coding standard used in the USC Biostats department.">
+  <title>1 Building a R package | 02-r_package.utf8.md</title>
+  <meta name="description" content="">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="3 Building a R package | USC biostats R Handbook" />
+  <meta property="og:title" content="1 Building a R package | 02-r_package.utf8.md" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Working document description best practices and coding standard used in the USC Biostats department." />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  
+  
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Building a R package | USC biostats R Handbook" />
+  <meta name="twitter:title" content="1 Building a R package | 02-r_package.utf8.md" />
   
-  <meta name="twitter:description" content="Working document description best practices and coding standard used in the USC Biostats department." />
+  
   
 
-<meta name="author" content="Emil Hvitfeldt">
 
 
 
@@ -31,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="coding-standards.html">
-<link rel="next" href="parallel-computing.html">
+
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -129,61 +128,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Handbook</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Welcome</a></li>
-<li class="chapter" data-level="2" data-path="coding-standards.html"><a href="coding-standards.html"><i class="fa fa-check"></i><b>2</b> Coding Standards</a><ul>
-<li class="chapter" data-level="2.1" data-path="coding-standards.html"><a href="coding-standards.html#general-overview"><i class="fa fa-check"></i><b>2.1</b> General overview</a></li>
-<li class="chapter" data-level="2.2" data-path="coding-standards.html"><a href="coding-standards.html#helpful-suggestions"><i class="fa fa-check"></i><b>2.2</b> Helpful suggestions</a></li>
+<li class="chapter" data-level="1" data-path=""><a href="#building-a-r-package"><i class="fa fa-check"></i><b>1</b> Building a R package</a><ul>
+<li class="chapter" data-level="1.1" data-path=""><a href="#motivation"><i class="fa fa-check"></i><b>1.1</b> Motivation</a></li>
+<li class="chapter" data-level="1.2" data-path=""><a href="#preparation"><i class="fa fa-check"></i><b>1.2</b> Preparation</a><ul>
+<li class="chapter" data-level="1.2.1" data-path=""><a href="#naming-your-r-package"><i class="fa fa-check"></i><b>1.2.1</b> Naming your R package</a></li>
+<li class="chapter" data-level="1.2.2" data-path=""><a href="#checking"><i class="fa fa-check"></i><b>1.2.2</b> Checking</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="building-a-r-package.html"><a href="building-a-r-package.html"><i class="fa fa-check"></i><b>3</b> Building a R package</a><ul>
-<li class="chapter" data-level="3.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
-<li class="chapter" data-level="3.2" data-path="building-a-r-package.html"><a href="building-a-r-package.html#preperation"><i class="fa fa-check"></i><b>3.2</b> Preperation</a><ul>
-<li class="chapter" data-level="3.2.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#naming-your-r-package"><i class="fa fa-check"></i><b>3.2.1</b> Naming your R package</a></li>
-<li class="chapter" data-level="3.2.2" data-path="building-a-r-package.html"><a href="building-a-r-package.html#checking"><i class="fa fa-check"></i><b>3.2.2</b> Checking</a></li>
+<li class="chapter" data-level="1.3" data-path=""><a href="#minimal-r-package"><i class="fa fa-check"></i><b>1.3</b> Minimal R Package</a></li>
+<li class="chapter" data-level="1.4" data-path=""><a href="#additional-components"><i class="fa fa-check"></i><b>1.4</b> Additional Components</a><ul>
+<li class="chapter" data-level="1.4.1" data-path=""><a href="#r-code-r"><i class="fa fa-check"></i><b>1.4.1</b> R code <code>R/</code></a></li>
+<li class="chapter" data-level="1.4.2" data-path=""><a href="#documentation"><i class="fa fa-check"></i><b>1.4.2</b> Documentation</a></li>
+<li class="chapter" data-level="1.4.3" data-path=""><a href="#dependencies"><i class="fa fa-check"></i><b>1.4.3</b> Dependencies</a></li>
+<li class="chapter" data-level="1.4.4" data-path=""><a href="#license"><i class="fa fa-check"></i><b>1.4.4</b> License</a></li>
+<li class="chapter" data-level="1.4.5" data-path=""><a href="#readme"><i class="fa fa-check"></i><b>1.4.5</b> README</a></li>
+<li class="chapter" data-level="1.4.6" data-path=""><a href="#tests"><i class="fa fa-check"></i><b>1.4.6</b> Tests</a></li>
+<li class="chapter" data-level="1.4.7" data-path=""><a href="#data"><i class="fa fa-check"></i><b>1.4.7</b> Data</a></li>
+<li class="chapter" data-level="1.4.8" data-path=""><a href="#compiledcode"><i class="fa fa-check"></i><b>1.4.8</b> Compiled code</a></li>
+<li class="chapter" data-level="1.4.9" data-path=""><a href="#vignettes"><i class="fa fa-check"></i><b>1.4.9</b> vignettes</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="building-a-r-package.html"><a href="building-a-r-package.html#minimal-r-package"><i class="fa fa-check"></i><b>3.3</b> Minimal R Package</a></li>
-<li class="chapter" data-level="3.4" data-path="building-a-r-package.html"><a href="building-a-r-package.html#additional-components"><i class="fa fa-check"></i><b>3.4</b> Additional Components</a><ul>
-<li class="chapter" data-level="3.4.1" data-path="building-a-r-package.html"><a href="building-a-r-package.html#r-code-r"><i class="fa fa-check"></i><b>3.4.1</b> R code <code>R/</code></a></li>
-<li class="chapter" data-level="3.4.2" data-path="building-a-r-package.html"><a href="building-a-r-package.html#documentation"><i class="fa fa-check"></i><b>3.4.2</b> Documentation</a></li>
-<li class="chapter" data-level="3.4.3" data-path="building-a-r-package.html"><a href="building-a-r-package.html#dependencies"><i class="fa fa-check"></i><b>3.4.3</b> Dependencies</a></li>
-<li class="chapter" data-level="3.4.4" data-path="building-a-r-package.html"><a href="building-a-r-package.html#license"><i class="fa fa-check"></i><b>3.4.4</b> License</a></li>
-<li class="chapter" data-level="3.4.5" data-path="building-a-r-package.html"><a href="building-a-r-package.html#readme"><i class="fa fa-check"></i><b>3.4.5</b> README</a></li>
-<li class="chapter" data-level="3.4.6" data-path="building-a-r-package.html"><a href="building-a-r-package.html#tests"><i class="fa fa-check"></i><b>3.4.6</b> Tests</a></li>
-<li class="chapter" data-level="3.4.7" data-path="building-a-r-package.html"><a href="building-a-r-package.html#continious-integration"><i class="fa fa-check"></i><b>3.4.7</b> Continious integration</a></li>
-<li class="chapter" data-level="3.4.8" data-path="building-a-r-package.html"><a href="building-a-r-package.html#data"><i class="fa fa-check"></i><b>3.4.8</b> Data</a></li>
-<li class="chapter" data-level="3.4.9" data-path="building-a-r-package.html"><a href="building-a-r-package.html#compiledcode"><i class="fa fa-check"></i><b>3.4.9</b> Compiled code</a></li>
-<li class="chapter" data-level="3.4.10" data-path="building-a-r-package.html"><a href="building-a-r-package.html#news"><i class="fa fa-check"></i><b>3.4.10</b> News</a></li>
-<li class="chapter" data-level="3.4.11" data-path="building-a-r-package.html"><a href="building-a-r-package.html#vignettes"><i class="fa fa-check"></i><b>3.4.11</b> vignettes</a></li>
-</ul></li>
-<li class="chapter" data-level="3.5" data-path="building-a-r-package.html"><a href="building-a-r-package.html#resources"><i class="fa fa-check"></i><b>3.5</b> Resources</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="parallel-computing.html"><a href="parallel-computing.html"><i class="fa fa-check"></i><b>4</b> Parallel computing</a><ul>
-<li class="chapter" data-level="4.1" data-path="parallel-computing.html"><a href="parallel-computing.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
-<li class="chapter" data-level="4.2" data-path="parallel-computing.html"><a href="parallel-computing.html#what-is-parallel-computing-anyway"><i class="fa fa-check"></i><b>4.2</b> What is parallel computing, anyway?</a></li>
-<li class="chapter" data-level="4.3" data-path="parallel-computing.html"><a href="parallel-computing.html#when-is-it-a-good-idea"><i class="fa fa-check"></i><b>4.3</b> When is it a good idea?</a></li>
-<li class="chapter" data-level="4.4" data-path="parallel-computing.html"><a href="parallel-computing.html#fundamentals"><i class="fa fa-check"></i><b>4.4</b> Fundamentals</a><ul>
-<li class="chapter" data-level="4.4.1" data-path="parallel-computing.html"><a href="parallel-computing.html#types-of-parallelisms"><i class="fa fa-check"></i><b>4.4.1</b> Types of parallelisms</a></li>
-<li class="chapter" data-level="4.4.2" data-path="parallel-computing.html"><a href="parallel-computing.html#what-you-need-to-know-about-hardware"><i class="fa fa-check"></i><b>4.4.2</b> What you need to know about Hardware</a></li>
-<li class="chapter" data-level="4.4.3" data-path="parallel-computing.html"><a href="parallel-computing.html#hpc-in-r"><i class="fa fa-check"></i><b>4.4.3</b> HPC in R</a></li>
-</ul></li>
-<li class="chapter" data-level="4.5" data-path="parallel-computing.html"><a href="parallel-computing.html#parallel-computing-in-r"><i class="fa fa-check"></i><b>4.5</b> Parallel computing in R</a><ul>
-<li class="chapter" data-level="4.5.1" data-path="parallel-computing.html"><a href="parallel-computing.html#the-parallel-package"><i class="fa fa-check"></i><b>4.5.1</b> The parallel package</a></li>
-<li class="chapter" data-level="4.5.2" data-path="parallel-computing.html"><a href="parallel-computing.html#parallel-example-1-parallel-rng"><i class="fa fa-check"></i><b>4.5.2</b> parallel example 1: Parallel RNG</a></li>
-</ul></li>
-<li class="chapter" data-level="4.6" data-path="parallel-computing.html"><a href="parallel-computing.html#parallel-example-2-simulating-pi"><i class="fa fa-check"></i><b>4.6</b> parallel example 2: Simulating <span class="math inline">\(\pi\)</span></a><ul>
-<li class="chapter" data-level="4.6.1" data-path="parallel-computing.html"><a href="parallel-computing.html#speedup-things-with-rcpp-openmp"><i class="fa fa-check"></i><b>4.6.1</b> Speedup things with Rcpp + OpenMP</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="testing.html"><a href="testing.html"><i class="fa fa-check"></i><b>5</b> Testing</a></li>
-<li class="chapter" data-level="6" data-path="profile-benchmark.html"><a href="profile-benchmark.html"><i class="fa fa-check"></i><b>6</b> Profiling and benchmarking</a><ul>
-<li class="chapter" data-level="6.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#introduction-1"><i class="fa fa-check"></i><b>6.1</b> Introduction</a></li>
-<li class="chapter" data-level="6.2" data-path="profile-benchmark.html"><a href="profile-benchmark.html#profiling"><i class="fa fa-check"></i><b>6.2</b> Profiling</a><ul>
-<li class="chapter" data-level="6.2.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#troubleshooting"><i class="fa fa-check"></i><b>6.2.1</b> Troubleshooting</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="profile-benchmark.html"><a href="profile-benchmark.html#benchmarking"><i class="fa fa-check"></i><b>6.3</b> Benchmarking</a><ul>
-<li class="chapter" data-level="6.3.1" data-path="profile-benchmark.html"><a href="profile-benchmark.html#slow-code"><i class="fa fa-check"></i><b>6.3.1</b> Slow code</a></li>
-<li class="chapter" data-level="6.3.2" data-path="profile-benchmark.html"><a href="profile-benchmark.html#fast-code---microbenchmarking"><i class="fa fa-check"></i><b>6.3.2</b> Fast code - microbenchmarking</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="profile-benchmark.html"><a href="profile-benchmark.html#additional-resources"><i class="fa fa-check"></i><b>6.4</b> Additional resources</a></li>
+<li class="chapter" data-level="1.5" data-path=""><a href="#resources"><i class="fa fa-check"></i><b>1.5</b> Resources</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -197,7 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">USC biostats R Handbook</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
           </h1>
         </div>
 
@@ -205,16 +168,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
+<!--bookdown:title:end-->
+<!--bookdown:title:start-->
 <div id="building-a-r-package" class="section level1">
-<h1><span class="header-section-number">3</span> Building a R package</h1>
+<h1><span class="header-section-number">1</span> Building a R package</h1>
 <div id="motivation" class="section level2">
-<h2><span class="header-section-number">3.1</span> Motivation</h2>
-<p>This chapter will show you how to create a R package with varrying number of additions. From a simple minimal package for personal use to a fully-fleshed package.</p>
+<h2><span class="header-section-number">1.1</span> Motivation</h2>
+<p>This chapter will show you how to create a R package with varying number of additions. From a simple minimal package for personal use to a fully-fleshed package.</p>
 <p>Creating a R package is not only done for publication. It also helps you stay organizes, save yourself time while still letting you share your code with other people. Learning what goes into creating a package can be a mouthful at first but the conventions and rules revolving around packages makes the creation easy.</p>
 </div>
-<div id="preperation" class="section level2">
-<h2><span class="header-section-number">3.2</span> Preperation</h2>
-<p>To get started it would be preferriable for you to have git installed on your machine and have a Github account. <a href="https://happygitwithr.com/" class="uri">https://happygitwithr.com/</a> provides a brilliant and thorough walkthrough of using git/Github with R.</p>
+<div id="preparation" class="section level2">
+<h2><span class="header-section-number">1.2</span> Preparation</h2>
+<p>To get started it would be preferable for you to have git installed on your machine and have a Github account. <a href="https://happygitwithr.com/" class="uri">https://happygitwithr.com/</a> provides a brilliant and thorough walk-through of using git/Github with R.</p>
 <p>In addition to git, you will also need the following packages</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;devtools&quot;</span>, <span class="st">&quot;roxygen2&quot;</span>, <span class="st">&quot;testthat&quot;</span>, <span class="st">&quot;knitr&quot;</span>))</code></pre>
 <p>If you are planning on using compiled code you will need to install the following depending on your operating system:</p>
@@ -222,7 +187,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 On Mac, download and install XCode (available for free in the App Store) or the <a href="http://developer.apple.com/downloads">Command Line Tools for Xcode</a>.<br />
 On Linux, download and install the R development tools.</p>
 <div id="naming-your-r-package" class="section level3">
-<h3><span class="header-section-number">3.2.1</span> Naming your R package</h3>
+<h3><span class="header-section-number">1.2.1</span> Naming your R package</h3>
 <p>When creating a package you need to give it at name. The name</p>
 <ul>
 <li>can only consist of letters, numbers and periods</li>
@@ -232,14 +197,14 @@ On Linux, download and install the R development tools.</p>
 <p>Furthermore we recommend that you don’t use periods and stick with letters as much as possible. You need a unique name, mainly because of the fact that if you plan on getting your package on CRAN or bioconductor you can’t overlap with any of their names. A easy check for can be done using the <a href="https://github.com/ropenscilabs/available">available package</a>. <strong>available</strong> also checks across acronyms, slang and other meanings that you might have missed. Secondly try to pick a name that is googleable.</p>
 </div>
 <div id="checking" class="section level3">
-<h3><span class="header-section-number">3.2.2</span> Checking</h3>
-<p>How that you are a R developer you will benifit from using the essential tool <code>R CMD check</code>. <code>R CMD check</code> check your package for common problems and reports them back to you. Using this early and often stops you from having to deal with ingrown problems. You can run <code>R CMD check</code> by typing the code <code>devtools::check()</code> or with the shortcut Ctrl/Cmd + Shift + E in RStudio. A common workflow is</p>
+<h3><span class="header-section-number">1.2.2</span> Checking</h3>
+<p>How that you are a R developer you will benefit from using the essential tool <code>R CMD check</code>. <code>R CMD check</code> check your package for common problems and reports them back to you. Using this early and often stops you from having to deal with ingrown problems. You can run <code>R CMD check</code> by typing the code <code>devtools::check()</code> or with the shortcut Ctrl/Cmd + Shift + E in RStudio. A common workflow is</p>
 <ul>
 <li>Run <code>R CMD check</code></li>
 <li>If there is a problem fix one of them</li>
 <li>Repeat until you don’t have any errors</li>
 </ul>
-<p>More information about individuel checks can be found <a href="https://r-pkgs.org/check.html#check-checks">here</a>.</p>
+<p>More information about individual checks can be found <a href="https://r-pkgs.org/check.html#check-checks">here</a>.</p>
 <p>Further reading:</p>
 <ul>
 <li><a href="https://r-pkgs.org/check" class="uri">https://r-pkgs.org/check</a></li>
@@ -247,8 +212,8 @@ On Linux, download and install the R development tools.</p>
 </div>
 </div>
 <div id="minimal-r-package" class="section level2">
-<h2><span class="header-section-number">3.3</span> Minimal R Package</h2>
-<p>Creating a package can easily be done using the <strong>usethis</strong> package, all you need is to provide a path to the directory you want the pacakge to be created in.</p>
+<h2><span class="header-section-number">1.3</span> Minimal R Package</h2>
+<p>Creating a package can easily be done using the <strong>usethis</strong> package, all you need is to provide a path to the directory you want the package to be created in.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">create_package</span>(<span class="st">&quot;~/path/to/packagename&quot;</span>)</code></pre>
 <p>If you are using Rstudio you should already be transported to a project at the specified location with the following content</p>
 <p><img src="screenshots/r-packages/minimal-package.png" /></p>
@@ -259,25 +224,25 @@ On Linux, download and install the R development tools.</p>
 <p>The roles <code>aut</code> and <code>cre</code> stand for author and creator respectively. For persons with an ORCID identifier (see <a href="https://orcid.org/" class="uri">https://orcid.org/</a>, you can provide the identifier as part of the comment argument of <code>person()</code></p>
 <pre><code>person(&quot;&quot;given name&quot;, &quot;family name&quot;, comment = c(ORCID = &quot;0000-1111-2222-3333&quot;))</code></pre>
 <p>More details regarding use of roles can be found <a href="https://r-pkgs.org/description.html#author">here</a>.</p>
-<p>Next you need to fill in the <code>Title</code> and <code>Description</code> fields. The <code>Title</code> should be a short and simple description of the package. Must be plain text, title-case (This Sentence Is Title Case), not end in a period and should preferable be les then 65 characters. The <code>Description</code> fields is the more detailed version of the <code>Title</code> field. It should span multiple lines, each indented 4 spaces (first excluded) and being less then 80 characters long. This is a fairly limited space so further details should be included in the readme.</p>
+<p>Next you need to fill in the <code>Title</code> and <code>Description</code> fields. The <code>Title</code> should be a short and simple description of the package. Must be plain text, title-case (This Sentence Is Title Case), not end in a period and should preferable be less then 65 characters. The <code>Description</code> fields is the more detailed version of the <code>Title</code> field. It should span multiple lines, each indented 4 spaces (first excluded) and being less then 80 characters long. This is a fairly limited space so further details should be included in the readme.</p>
 <p>The package created here doesn’t provide anything in terms of functions or data. Adding these objects will be the subject of the next section.</p>
 </div>
 <div id="additional-components" class="section level2">
-<h2><span class="header-section-number">3.4</span> Additional Components</h2>
-<p>This section will introduce various components you can include in your package to improve its functionality and useability.</p>
+<h2><span class="header-section-number">1.4</span> Additional Components</h2>
+<p>This section will introduce various components you can include in your package to improve its functionality and usability.</p>
 <div id="r-code-r" class="section level3">
-<h3><span class="header-section-number">3.4.1</span> R code <code>R/</code></h3>
-<p>The meat of a package will generally come from the functions it provides (expections are data packages which just contain data, the <a href="https://CRAN.R-project.org/package=gapminder">gapminder</a> is a notable example of this). All your functions should be includes inside the <code>R/</code> folder in <code>.R</code> scripts. While there are no hard rules regarding the organization of functions, it is generally advised to devide the functions amoung multiple <code>.R</code> scripts for better organization. Likewise will naming the scripts not improve the runtime and efficiency of your code but will make it easier to navigate.</p>
-<p>A <code>.R</code> script can be created manually and saved in the <code>R/</code> folder, or you can use the <code>use_r()</code> function from <strong>usethis</strong>. Suppose we are adding a function to cluster some data accourding to the k-means clustering, an appropiate name of the <code>.R</code> script could be <code>kmeans</code>.</p>
+<h3><span class="header-section-number">1.4.1</span> R code <code>R/</code></h3>
+<p>The meat of a package will generally come from the functions it provides (exceptions are data packages which just contain data, the <a href="https://CRAN.R-project.org/package=gapminder">gapminder</a> is a notable example of this). All your functions should be includes inside the <code>R/</code> folder in <code>.R</code> scripts. While there are no hard rules regarding the organization of functions, it is generally advised to divide the functions among multiple <code>.R</code> scripts for better organization. Likewise will naming the scripts not improve the run time and efficiency of your code but will make it easier to navigate.</p>
+<p>A <code>.R</code> script can be created manually and saved in the <code>R/</code> folder, or you can use the <code>use_r()</code> function from <strong>usethis</strong>. Suppose we are adding a function to cluster some data according to the k-means clustering, an appropriate name of the <code>.R</code> script could be <code>kmeans</code>.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">use_r</span>(<span class="st">&quot;kmeans&quot;</span>)</code></pre>
-<p>This will create a file called <code>kmeans.R</code> in the <code>R/</code> folder. To make the functions useable you must export them, this will be covers in the next subsection <a href="building-a-r-package.html#documentation">Documentation</a>.</p>
+<p>This will create a file called <code>kmeans.R</code> in the <code>R/</code> folder. To make the functions usable you must export them, this will be covers in the next subsection <a href="#documentation">Documentation</a>.</p>
 <p>Further reading:</p>
 <ul>
 <li><a href="https://r-pkgs.org/r" class="uri">https://r-pkgs.org/r</a></li>
 </ul>
 </div>
 <div id="documentation" class="section level3">
-<h3><span class="header-section-number">3.4.2</span> Documentation</h3>
+<h3><span class="header-section-number">1.4.2</span> Documentation</h3>
 <p>Documentation is perhaps the single most important part of a package, without it, new users would not be able to use your otherwise excellent package. the documentation in a r package is stored in the <code>man/</code> folder, but you should never modify these files by hand. You should use <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html">roxygen2</a> to document your code in the <code>.R</code> scripts. roxygen2 comments looks like this</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co">#&#39; Adds 1 to a number.</span>
 <span class="co">#&#39; </span>
@@ -295,11 +260,11 @@ addone &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
 <p>Notice how each like line begins with <code>#'</code> this is the indication that is is a <strong>roxygen2</strong> comment to be used for documentation. A basic function documentation comes with 6 parts:</p>
 <ol style="list-style-type: decimal">
 <li>The “title” is first line of a roxygen2 comment block. This becomes the headline. This should be kept brief and concise.</li>
-<li>The following paragraphs is the description and details. The first paragraph will become the descripton (to appear right after the title) and the remaining paragraphs will become details to appear latter on the documentation page.</li>
+<li>The following paragraphs is the description and details. The first paragraph will become the description (to appear right after the title) and the remaining paragraphs will become details to appear latter on the documentation page.</li>
 <li>Argument documentation. There should be a <code>@param</code> tag for each argument in the function noting the name of the argument and its use.</li>
-<li>The expected outcome. The <code>@return</code> should be followed by a brief explination of the type of output the function will provide.</li>
+<li>The expected outcome. The <code>@return</code> should be followed by a brief explanation of the type of output the function will provide.</li>
 <li>Declaration of exportation. If you want the function to be used by the user you must include the <code>@export</code> tag in the roxygen2 comments.</li>
-<li>Exampes. Write various examples following the <code>@examples</code> tag. these examples should be fairly small and run fast.</li>
+<li>Examples. Write various examples following the <code>@examples</code> tag. these examples should be fairly small and run fast.</li>
 </ol>
 <p>for information on proper use and additional tags please refer to the links in further reading. To quickly provide a roxygen2 skeleton do Code &gt; Insert roxygen skeleton in Rstudio while having the function selected.</p>
 <p>once you have written the documentation as roxygen2 comments you need to turn it into <code>.Rd</code> files which should be located in the <code>man/</code> folder. This is done by running roxygen.</p>
@@ -311,10 +276,11 @@ addone &lt;-<span class="st"> </span><span class="cf">function</span>(x) {
 <ul>
 <li><a href="https://r-pkgs.org/man" class="uri">https://r-pkgs.org/man</a></li>
 <li><a href="https://cran.r-project.org/doc/manuals/R-exts.html#Rd-format" class="uri">https://cran.r-project.org/doc/manuals/R-exts.html#Rd-format</a></li>
+<li><a href="https://ropensci.github.io/dev_guide/building.html#documentation" class="uri">https://ropensci.github.io/dev_guide/building.html#documentation</a></li>
 </ul>
 </div>
 <div id="dependencies" class="section level3">
-<h3><span class="header-section-number">3.4.3</span> Dependencies</h3>
+<h3><span class="header-section-number">1.4.3</span> Dependencies</h3>
 <p>One of the jobs of the <code>DESCRIPTION</code> file is to denote that other packages are needed for your package to run. Generally you will only need to use 3 of the tags. <code>Imports</code>, <code>Suggests</code> and <code>LinkingTo</code>.</p>
 <ul>
 <li>Imports are packages that your package to work.</li>
@@ -337,19 +303,20 @@ need.</li>
   
   distinct_n <span class="op">/</span><span class="st"> </span>full_n
 }</code></pre>
-<p>The <code>LinkingTo</code> field will automatically filled when you are to use C or C++, this will be covered in the section on <a href="building-a-r-package.html#compiledcode">Compiled code</a>.</p>
+<p>The <code>LinkingTo</code> field will automatically filled when you are to use C or C++, this will be covered in the section on <a href="#compiledcode">Compiled code</a>.</p>
 <p>Further reading:</p>
 <ul>
 <li><a href="https://r-pkgs.org/description.html#dependencies" class="uri">https://r-pkgs.org/description.html#dependencies</a></li>
+<li><a href="https://ropensci.github.io/dev_guide/building.html#package-dependencies" class="uri">https://ropensci.github.io/dev_guide/building.html#package-dependencies</a></li>
 <li><a href="http://dirk.eddelbuettel.com/blog/2019/03/14/#020_dependency_badges" class="uri">http://dirk.eddelbuettel.com/blog/2019/03/14/#020_dependency_badges</a></li>
 </ul>
 </div>
 <div id="license" class="section level3">
-<h3><span class="header-section-number">3.4.4</span> License</h3>
-<p>The <code>License</code> field in the <code>DESCRIPTION</code> file is telling you what kind of license applies to the code in the package. We will not cover the difference between the different licenses in the book and will refer readers to <a href="https://r-pkgs.org/description.html#license" class="uri">https://r-pkgs.org/description.html#license</a> as a starting point and the further reading section for further reading. In general you will end with one of the 3 lincenses <code>MIT</code>, <code>GPL-3</code> or <code>CC0</code>. Once you have decided on your license you simple use the corresponding <strong>usethis</strong> function to handle the rest.</p>
+<h3><span class="header-section-number">1.4.4</span> License</h3>
+<p>The <code>License</code> field in the <code>DESCRIPTION</code> file is telling you what kind of license applies to the code in the package. We will not cover the difference between the different licenses in the book and will refer readers to <a href="https://r-pkgs.org/description.html#license" class="uri">https://r-pkgs.org/description.html#license</a> as a starting point and the further reading section for further reading. In general you will end with one of the 3 licenses <code>MIT</code>, <code>GPL-3</code> or <code>CC0</code>. Once you have decided on your license you simple use the corresponding <strong>usethis</strong> function to handle the rest.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">use_mit_license</span>(<span class="st">&quot;My Name&quot;</span>)
 <span class="kw">use_gpl3_license</span>(<span class="st">&quot;My Name&quot;</span>)
-<span class="kw">use_cc0_license</span>(<span class="st">&quot;Ny Name&quot;</span>)</code></pre>
+<span class="kw">use_cc0_license</span>(<span class="st">&quot;My Name&quot;</span>)</code></pre>
 <p>Further reading:</p>
 <ul>
 <li><a href="https://r-pkgs.org/description.html#license" class="uri">https://r-pkgs.org/description.html#license</a></li>
@@ -360,29 +327,50 @@ need.</li>
 </ul>
 </div>
 <div id="readme" class="section level3">
-<h3><span class="header-section-number">3.4.5</span> README</h3>
+<h3><span class="header-section-number">1.4.5</span> README</h3>
+<p>The readme acts as a main page for your package. This will be the first thing a user will see if your package is only on github. It is still relevant once you get the package on CRAN but less so as more users will go through the CRAN page instead.</p>
+<p>The readme file is created using the <strong>usethis</strong> package</p>
+<p>Further reading:</p>
+<ul>
+<li><a href="https://ropensci.github.io/dev_guide/building.html#readme" class="uri">https://ropensci.github.io/dev_guide/building.html#readme</a></li>
+</ul>
 </div>
 <div id="tests" class="section level3">
-<h3><span class="header-section-number">3.4.6</span> Tests</h3>
-</div>
-<div id="continious-integration" class="section level3">
-<h3><span class="header-section-number">3.4.7</span> Continious integration</h3>
+<h3><span class="header-section-number">1.4.6</span> Tests</h3>
+<p>Once you start writing functions you want to make sure that they work the way you expect them to work. More importantly you would like for them to continue working as you adjust them. This is where testing comes in. You write an expression using your function, you then write what you expect the expression to do and compare. If those two things are the same the test have passed.</p>
+<p>To do testing in R we recommend you use a framework such as <a href="https://testthat.r-lib.org/">testthat</a>.</p>
+<p>A thorough guide of testing is done can be found in the <a href="#testing">testing chapter</a>.</p>
+<p>Further reading:</p>
+<ul>
+<li><a href="https://r-pkgs.org/tests.html" class="uri">https://r-pkgs.org/tests.html</a></li>
+<li><a href="https://ropensci.github.io/dev_guide/building.html#testing" class="uri">https://ropensci.github.io/dev_guide/building.html#testing</a></li>
+</ul>
 </div>
 <div id="data" class="section level3">
-<h3><span class="header-section-number">3.4.8</span> Data</h3>
+<h3><span class="header-section-number">1.4.7</span> Data</h3>
+<p>You might want to a a small example data set to showcase how your package works. If you have the script that creates the data, start by calling the <code>use_data_raw()</code> function from the <strong>usethis</strong> package. This will create a folder in which you should include the script that created the data.</p>
+<p>Once you have your data use the <code>use_data()</code> function on the data object and <strong>usethis</strong> will take care of the rest.</p>
+<p>Further reading:</p>
+<ul>
+<li><a href="https://r-pkgs.org/data.html#data" class="uri">https://r-pkgs.org/data.html#data</a></li>
+</ul>
 </div>
 <div id="compiledcode" class="section level3">
-<h3><span class="header-section-number">3.4.9</span> Compiled code</h3>
-</div>
-<div id="news" class="section level3">
-<h3><span class="header-section-number">3.4.10</span> News</h3>
+<h3><span class="header-section-number">1.4.8</span> Compiled code</h3>
 </div>
 <div id="vignettes" class="section level3">
-<h3><span class="header-section-number">3.4.11</span> vignettes</h3>
+<h3><span class="header-section-number">1.4.9</span> vignettes</h3>
+<p>Vignettes are a large scale example. Use it to explain the workflow of your package. Remember that the reader don’t know the package as well as you do. Describe the problem(s) your package is trying to solve and show how it is used to solve it. Adding a vignette is done by using the <code>use_vignette()</code> function from the <strong>usethis</strong> package like so</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">use_vignette</span>(<span class="st">&quot;Name of my vignette&quot;</span>)</code></pre>
+<p>This will create a skeleton vignette that you can fill out.</p>
+<p>Further reading:</p>
+<ul>
+<li><a href="https://r-pkgs.org/vignettes.html" class="uri">https://r-pkgs.org/vignettes.html</a></li>
+</ul>
 </div>
 </div>
 <div id="resources" class="section level2">
-<h2><span class="header-section-number">3.5</span> Resources</h2>
+<h2><span class="header-section-number">1.5</span> Resources</h2>
 <p>Usethis package<br />
 <a href="https://usethis.r-lib.org/" class="uri">https://usethis.r-lib.org/</a></p>
 <p>Cran documentation<br />
@@ -396,7 +384,6 @@ need.</li>
 <p><a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html" class="uri">https://cran.r-project.org/doc/manuals/r-release/R-exts.html</a></p>
 <p><a href="https://ropensci.github.io/dev_guide/" class="uri">https://ropensci.github.io/dev_guide/</a></p>
 <p><a href="https://ropensci.org/blog/2018/03/16/thanking-reviewers-in-metadata/" class="uri">https://ropensci.org/blog/2018/03/16/thanking-reviewers-in-metadata/</a></p>
-
 </div>
 </div>
             </section>
@@ -404,8 +391,8 @@ need.</li>
           </div>
         </div>
       </div>
-<a href="coding-standards.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="parallel-computing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -435,34 +422,22 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-r_package.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/%s",
 "text": "Edit"
 },
 "history": {
 "link": null,
 "text": null
 },
-"download": ["Handbook.pdf", "Handbook.epub"],
+"download": null,
 "toc": {
 "collapse": "subsection"
-}
+},
+"search": false
 });
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
