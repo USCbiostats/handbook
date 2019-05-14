@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>2 Coding Standards | USC biostats R Handbook</title>
+  <title>7 HPC | USC biostats R Handbook</title>
   <meta name="description" content="Working document description best practices and coding standard used in the USC Biostats department.">
   <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="2 Coding Standards | USC biostats R Handbook" />
+  <meta property="og:title" content="7 HPC | USC biostats R Handbook" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Coding Standards | USC biostats R Handbook" />
+  <meta name="twitter:title" content="7 HPC | USC biostats R Handbook" />
   
   <meta name="twitter:description" content="Working document description best practices and coding standard used in the USC Biostats department." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="building-a-r-package.html">
+<link rel="prev" href="profile-benchmark.html">
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -214,43 +214,111 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="coding-standards" class="section level1">
-<h1><span class="header-section-number">2</span> Coding Standards</h1>
-<p>This chapter will outline standards we aim to adhere to. In addition to these standards will be some suggestions on best practices we hopes you will find useful.</p>
-<div id="general-overview" class="section level2">
-<h2><span class="header-section-number">2.1</span> General overview</h2>
-<blockquote>
-<p>Try to keep your code to less then 80 characters per line.</p>
-</blockquote>
-<p>This will improve visibility as the code willm fit on your screen when you are working. If you are using Rstudio, you can add a visual marker on the 80 character line. Click Rstudio -&gt; Preferences -&gt; Code -&gt; display -&gt; Show margin.</p>
-<blockquote>
-<p>document your code.</p>
-</blockquote>
-<p>Explain yourself. Each function should have acommpanying documentation explaning what it is doing. This will help other people understand what your code is doing without having to look at the code indside the function. Notice that “other people” also describes “future you”.</p>
-<blockquote>
-<p>Use white space for indenting, 2 characters.</p>
-</blockquote>
-<blockquote>
-<p>When possible, structure your code as sections/files, with files holding similar functions and sections to give internal structure to your file.</p>
-</blockquote>
-<blockquote>
-<p>Include a informative README in each project.</p>
-</blockquote>
+<div id="hpc" class="section level1">
+<h1><span class="header-section-number">7</span> HPC</h1>
+<p>Some important points to consider while using HPC in R</p>
+<div id="keep-yor-library-organized" class="section level2">
+<h2><span class="header-section-number">7.1</span> Keep yor library organized</h2>
+<p>In a lot of setups the “Desk” space available (a.k.a. home) in HPC clusters is
+rather small. In such cases it makes sense to keep permanent files elsewhere.
+This applies directly to the R library (where R packages live).</p>
+<p><strong>The simple tip is</strong> Keep all your good stuff in a folder where you have a large
+storage (rather permanent) space, and create a symbolic link to it at home. Here
+is an example setup:</p>
+<pre class="shell"><code>$ cd /where/i/have/space/
+$ mkdir Rlibs
+$ cd ~
+$ ln -s R /where/i/have/space/Rlibs</code></pre>
+<p>This way, whenever you install an R package, by default it will be installed
+in your <code>/where/i/have/space/Rlibs</code> folder, but it is easy to access from any
+R session sin R will check (by default) your home directory for an <code>R</code> folder.</p>
+<p>In the particular case of USC, home directories (not to be confounded with
+project directories) are rather small, 1GB last time I checked, which makes
+sense as you shouldn’t be using the home directory for storage but for script
+submission.</p>
 </div>
-<div id="helpful-suggestions" class="section level2">
-<h2><span class="header-section-number">2.2</span> Helpful suggestions</h2>
-<p>Use a integrated development environment (IDE). We recommend <a href="https://www.rstudio.com/" class="uri">https://www.rstudio.com/</a>. <strong>TODO</strong> explain what the benefits of using a IDE.</p>
-<p>If you are looking for a coding style, then the <a href="https://style.tidyverse.org/">The tidyverse style guide</a> is a good place to start.</p>
+<div id="dont-hijack-nodes" class="section level2">
+<h2><span class="header-section-number">7.2</span> Don’t hijack nodes</h2>
+<p>A lot of times people tend to request resources by the node, which is a terrible
+(not very nice) practice. Instead of specifying how many nodes you want to use,
+tell the job-scheduler how many tasks (or cores) you request.</p>
+<p>In the case of Slurm, we can use the following setup:</p>
+<pre class="shell"><code>#SBATCH ntasks=1
+#SBATCH cpus-per-task=10</code></pre>
+<p>The previous code is advising<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> Slurm to allocate 10 cores for the job
+to be submitted. Another way to be more efficient is using Arrays, e.g.</p>
+<pre class="shell"><code>#SBATCH array=1-10
+#SBATCH ntasks=1
+#SBATCH cpus-per-task=4</code></pre>
+<p>This code tells Slurm that this job should be repeated 10 times with the same
+setup (10 jobs each with a single task, but each task using 4 processors,
+i.e. 40 cores). The key is in the environment variable <code>SLURM_ARRAY_TASK_ID</code> which
+will take values 1 through 10 at each job, so the user can specify what to do
+in each one of the jobs, for example, in R:</p>
+<pre class="sourceCode r"><code class="sourceCode r">ARRAY_ID &lt;-<span class="st"> </span><span class="kw">Sys.getenv</span>(<span class="st">&quot;SLURM_ARRAY_TASK_ID&quot;</span>)
+dat &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">sprintf</span>(<span class="st">&quot;path/to/a/file/file-number-%d.rds&quot;</span>, ARRAY_ID))</code></pre>
+</div>
+<div id="keep-tempfiles-where-they-belong" class="section level2">
+<h2><span class="header-section-number">7.3</span> Keep tempfiles where they belong</h2>
+<p>TL;DR use the stagging or tmp filesystems in your cluster to store temporal
+files. Only files that will be used for analysis (results) should be stored
+in project space.</p>
+<p>This means that any by-product like log files, auxiliar files, etc. should be
+kept in those places</p>
+</div>
+<div id="use-links-and-not-hard-copies-of-large-data" class="section level2">
+<h2><span class="header-section-number">7.4</span> Use links and not hard copies of large data</h2>
+<p>A very common and bad practice is to keep copies of large files duplicated accross
+projects. A good practice is to have symbolic links to whatever large data set
+you are planning to use instead. For example, suppose that we have the following
+file</p>
+<pre class="shell"><code>/path/to/a/very/large/big-dataset.csv</code></pre>
+<p>Instead of creating a copy in your project directory, you should consider doing
+the following instead:</p>
+<pre class="shell"><code>$ mkdir data-raw
+$ cd data-raw
+$ ln -s big-dataset.csv /path/to/a/very/large/big-dataset.csv</code></pre>
+<p>System managers (and your future self), will appreciate it.</p>
+</div>
+<div id="be-mindful-about-special-configs-for-r-packages" class="section level2">
+<h2><span class="header-section-number">7.5</span> Be mindful about special configs for R packages</h2>
+<p>Some times R packages installed from source have flags that can cause your code
+to blow in a HPC cluster setting. One recent example of this is the R package
+<code>rstan</code>. In this case, some flags passed to the compiler made the package to
+fine-tune the compilation to the current machine, which causes problems when
+your cluster is actually heterogenous in terms of nodes setup.</p>
 
 </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="3">
+<li id="fn3"><p>In Slurm, setting the number of cores or memory required for a particular
+job is actually an advice since the job-scheduler will try to allocate your job
+in a set of nodes (or single node) that hopefully goes along with the requirement.
+There are ways to be more strict about some of these, but is not recomended to
+follow that path.<a href="hpc.html#fnref3" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="building-a-r-package.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="profile-benchmark.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -280,7 +348,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-standards.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/06-hpc.Rmd",
 "text": "Edit"
 },
 "history": {
