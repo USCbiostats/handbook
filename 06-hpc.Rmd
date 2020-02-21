@@ -1,5 +1,18 @@
 # HPC
 
+## First step: get an account
+
+USC's High-performance-computing center (HPCC) offers accounts free of charge to
+all members of the community. The application process is only and simple, you
+just need to provide information about you, what are your plans for using HPC
+and some idea of how much space you are planning to use (which can be very
+generous).
+
+To apply for a new account, you can follow the instructions
+[here](https://hpcc.usc.edu/support/accounts/applying-for-a-hpcc-account/).
+Once you get your account approved, you can contact us to request access
+to Biostats' shared space (we have a ton).
+
 Some important points to consider while using HPC in R
 
 ## Keep yor library organized
